@@ -1,0 +1,94 @@
+/* =====================================
+   SITER
+   SISTEM INFORMASI TERMINAL KHUSUS
+   GLOBAL STYLE
+===================================== */
+
+:root {
+  --siter-navy: #173653;
+  --siter-blue: #1769AA;
+  --siter-light: #EAF2F8;
+  --siter-white: #FFFFFF;
+  --siter-red: #C93636;
+  --siter-green: #198754;
+  --siter-text: #263445;
+  --siter-muted: #718096;
+  --siter-border: #DCE4EC;
+
+  --siter-radius: 12px;
+  --siter-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+/* Dasar komponen SITER */
+
+.siter-page {
+  font-family: Arial, sans-serif;
+  color: var(--siter-text);
+}
+
+.siter-header {
+  background: var(--siter-navy);
+  color: var(--siter-white);
+  padding: 12px 16px;
+}
+
+.siter-logo {
+  width: auto;
+  max-width: 110px;
+  max-height: 55px;
+  object-fit: contain;
+}
+
+.siter-card {
+  background: var(--siter-white);
+  border: 1px solid var(--siter-border);
+  border-radius: var(--siter-radius);
+  padding: 16px;
+  box-shadow: var(--siter-shadow);
+}
+
+.siter-title {
+  color: var(--siter-navy);
+  font-weight: 700;
+}
+
+.siter-button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 16px;
+  background: var(--siter-blue);
+  color: var(--siter-white);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.siter-button-danger {
+  background: var(--siter-red);
+}
+
+.siter-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid var(--siter-border);
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.siter-muted {
+  color: var(--siter-muted);
+}
+
+.siter-section {
+  margin: 16px 0;
+}
+
+@media (max-width: 600px) {
+  .siter-card {
+    padding: 12px;
+  }
+
+  .siter-logo {
+    max-width: 90px;
+  }
+}

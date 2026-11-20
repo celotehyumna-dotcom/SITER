@@ -1,0 +1,865 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+<title>History Karyawan SITER</title>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style>
+:root {
+    --navy:#102b46;
+    --navy2:#17466d;
+    --gold:#e0a52b;
+    --bg:#f1f5f9;
+    --white:#fff;
+    --text:#243447;
+    --muted:#64748b;
+    --border:#e2e8f0;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+.header {
+    background:linear-gradient(120deg,var(--navy),var(--navy2));
+    color:white;padding:14px 18px;
+    display:flex;align-items:center;
+    justify-content:space-between;gap:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+.header-left {
+    display:flex;align-items:center;gap:9px;
+    font-size:13px;font-weight:bold;
+}
+.calendar {font-size:23px}
+.header button {
+    border:1px solid var(--gold);background:var(--gold);
+    color:var(--navy);padding:9px 13px;
+    border-radius:7px;font-weight:bold;cursor:pointer;
+}
+.hero {
+    background:linear-gradient(120deg,#102b46,#17466d);
+    color:white;text-align:center;padding:27px 15px 30px;
+}
+.hero h1 {font-size:23px;letter-spacing:1.2px;margin-bottom:9px}
+.hero p {
+    color:#e8b94e;font-size:12px;
+    letter-spacing:1.5px;font-weight:bold;
+}
+.hero .subtitle {margin-top:12px;color:#dbeafe;font-size:12px}
+.container {width:100%;max-width:1150px;margin:auto;padding:20px 15px 35px}
+.connection {
+    background:white;border-radius:8px;padding:12px 14px;
+    margin-bottom:20px;font-size:12px;display:flex;
+    align-items:center;gap:9px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.connection-dot {width:9px;height:9px;border-radius:50%;background:#94a3b8;flex-shrink:0}
+.connection.ok .connection-dot {background:#16a34a}
+.connection.error .connection-dot {background:#dc2626}
+.section-title {
+    font-size:16px;font-weight:bold;color:var(--navy);
+    margin-bottom:15px;border-left:4px solid var(--gold);
+    padding-left:10px;
+}
+.stats {
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:12px;margin-bottom:25px;
+}
+.stat-card {
+    background:white;padding:17px 10px;border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+    border-bottom:3px solid var(--gold);text-align:center;
+}
+.stat-icon {font-size:24px;margin-bottom:7px}
+.stat-number {font-size:24px;font-weight:bold;color:var(--navy)}
+.stat-label {font-size:11px;color:var(--muted);margin-top:6px;font-weight:bold}
+.filter-box {
+    background:white;padding:17px;border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:20px;
+}
+.filter-grid {display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+input,select {
+    width:100%;padding:11px;border:1px solid var(--border);
+    border-radius:7px;outline:none;background:white;
+    font-size:13px;color:var(--text);
+}
+input:focus,select:focus {border-color:var(--gold)}
+.actions {display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.btn {
+    padding:10px 14px;border:0;border-radius:7px;
+    font-size:12px;font-weight:bold;cursor:pointer;
+}
+.btn:disabled {opacity:.5;cursor:not-allowed}
+.btn-export {background:#15803d;color:white}
+.btn-refresh {background:var(--navy);color:white}
+.btn-delete {background:#dc2626;color:white}
+.table-box {
+    background:white;border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden;
+}
+.table-heading {
+    padding:16px;border-bottom:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.table-heading h3 {font-size:14px;color:var(--navy)}
+.total-label {
+    background:#eaf0f6;color:var(--navy);
+    padding:6px 10px;border-radius:20px;
+    font-size:11px;font-weight:bold;
+}
+.table-scroll {width:100%;overflow-x:auto}
+table {width:100%;border-collapse:collapse;min-width:1100px}
+th {
+    background:var(--navy);color:white;padding:13px 10px;
+    font-size:11px;text-align:left;white-space:nowrap;
+}
+td {
+    padding:12px 10px;border-bottom:1px solid var(--border);
+    font-size:12px;vertical-align:middle;
+}
+tbody tr:hover {background:#f8fafc}
+.activity {
+    padding:5px 9px;border-radius:20px;font-size:10px;
+    font-weight:bold;display:inline-block;white-space:nowrap;
+}
+.tambah {background:#dcfce7;color:#166534}
+.edit {background:#dbeafe;color:#1d4ed8}
+.hapus {background:#fee2e2;color:#b91c1c}
+.login {background:#fef3c7;color:#92400e}
+.other {background:#e2e8f0;color:#334155}
+.detail-btn {
+    background:#eaf0f6;color:var(--navy);
+    padding:6px 9px;border:0;border-radius:5px;
+    font-size:11px;cursor:pointer;
+}
+.empty {text-align:center;padding:40px 15px;color:var(--muted);font-size:13px}
+.empty-icon {font-size:35px;margin-bottom:10px}
+.message {
+    display:none;background:#fee2e2;color:#991b1b;
+    border-radius:8px;padding:12px;margin-bottom:15px;
+    font-size:12px;line-height:1.6;overflow-wrap:anywhere;
+}
+.footer {
+    background:var(--navy);color:#cbd5e1;text-align:center;
+    padding:19px 10px;font-size:11px;margin-top:25px;line-height:1.8;
+}
+.footer strong {color:var(--gold)}
+.detail-modal {
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
+    z-index:1000;padding:20px;align-items:center;justify-content:center;
+}
+.detail-content {
+    background:white;width:100%;max-width:550px;max-height:85vh;
+    overflow:auto;padding:20px;border-radius:12px;
+}
+.detail-content h3 {color:var(--navy);margin-bottom:15px}
+.detail-row {
+    padding:10px 0;border-bottom:1px solid var(--border);
+    font-size:12px;line-height:1.6;overflow-wrap:anywhere;
+}
+.detail-row strong {display:block;color:var(--navy);margin-bottom:3px}
+.detail-close {
+    width:100%;margin-top:15px;padding:11px;
+    background:var(--navy);color:white;border:0;
+    border-radius:7px;font-weight:bold;
+}
+pre {
+    white-space:pre-wrap;overflow-wrap:anywhere;
+    font-size:11px;background:#f1f5f9;padding:10px;border-radius:6px;
+}
+@media(max-width:700px) {
+    .stats {grid-template-columns:repeat(2,1fr)}
+    .filter-grid {grid-template-columns:1fr}
+    .hero h1 {font-size:20px}
+    .header {padding:12px}
+    .header-left {font-size:11px}
+    .header button {font-size:11px;padding:8px 10px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <span class="calendar">📅</span>
+        <span id="tanggalHariIni">Memuat tanggal...</span>
+    </div>
+    <button onclick="kembali()">↩ KEMBALI</button>
+</header>
+
+<section class="hero">
+    <h1>HISTORY KARYAWAN</h1>
+    <p>SATU DATA, SATU SISTEM, SATU TUJUAN</p>
+    <div class="subtitle">SISTEM INFORMASI ADMINISTRASI KARYAWAN</div>
+</section>
+
+<main class="container">
+
+    <div class="connection" id="statusKoneksi">
+        <span class="connection-dot"></span>
+        <span id="teksKoneksi">Memeriksa koneksi Firebase...</span>
+    </div>
+
+    <div class="message" id="pesanError"></div>
+
+    <div class="section-title">RINGKASAN AKTIVITAS</div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-number" id="totalAktivitas">0</div>
+            <div class="stat-label">TOTAL AKTIVITAS</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">➕</div>
+            <div class="stat-number" id="totalTambah">0</div>
+            <div class="stat-label">DATA DITAMBAHKAN</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✏️</div>
+            <div class="stat-number" id="totalEdit">0</div>
+            <div class="stat-label">DATA DIUBAH</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🗑️</div>
+            <div class="stat-number" id="totalHapus">0</div>
+            <div class="stat-label">DATA DIHAPUS</div>
+        </div>
+    </div>
+
+    <div class="section-title">PENCARIAN DAN FILTER HISTORY</div>
+
+    <div class="filter-box">
+        <div class="filter-grid">
+            <input type="search" id="cari" placeholder="🔍 Cari NIK atau nama karyawan...">
+
+            <select id="filterJenis">
+                <option value="">Semua Aktivitas</option>
+                <option value="TAMBAH">Penambahan Data</option>
+                <option value="EDIT">Perubahan Data</option>
+                <option value="HAPUS">Penghapusan Data</option>
+                <option value="LOGIN">Login</option>
+                <option value="LAINNYA">Lainnya</option>
+            </select>
+
+            <input type="date" id="filterTanggal">
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-refresh" id="btnRefresh">↻ REFRESH</button>
+            <button class="btn btn-export" id="btnExport">📊 EXPORT EXCEL</button>
+            <button class="btn btn-delete" id="btnDelete" disabled>🗑 HAPUS HISTORY</button>
+        </div>
+    </div>
+
+    <div class="section-title">DAFTAR RIWAYAT AKTIVITAS</div>
+
+    <div class="table-box">
+        <div class="table-heading">
+            <h3>LOG AKTIVITAS KARYAWAN</h3>
+            <span class="total-label" id="jumlahTampil">0 Aktivitas</span>
+        </div>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>TANGGAL & WAKTU</th>
+                        <th>JENIS AKTIVITAS</th>
+                        <th>NIK</th>
+                        <th>NAMA KARYAWAN</th>
+                        <th>KETERANGAN</th>
+                        <th>PETUGAS</th>
+                        <th>HALAMAN</th>
+                        <th>DETAIL</th>
+                    </tr>
+                </thead>
+                <tbody id="isiHistory"></tbody>
+            </table>
+        </div>
+
+        <div id="pesanKosong" class="empty">
+            <div class="empty-icon">📂</div>
+            <strong>Belum Ada Riwayat Aktivitas</strong>
+            <p style="margin-top:7px">
+                Riwayat akan muncul setelah aktivitas dicatat oleh halaman SITER.
+            </p>
+        </div>
+    </div>
+</main>
+
+<div class="detail-modal" id="modalDetail">
+    <div class="detail-content">
+        <h3>DETAIL RIWAYAT AKTIVITAS</h3>
+        <div id="isiDetail"></div>
+        <button class="detail-close" onclick="tutupDetail()">TUTUP</button>
+    </div>
+</div>
+
+<footer class="footer">
+    <div>SISTEM INFORMASI ADMINISTRASI KARYAWAN</div>
+    <div><strong>SATU DATA, SATU SISTEM, SATU TUJUAN</strong></div>
+    <div style="margin-top:7px">Created By : Heti Administration Officer</div>
+</footer>
+
+<script type="module">
+
+import { db, auth } from "./firebase-config.js";
+
+import {
+    collection,
+    onSnapshot,
+    getDocs,
+    getDoc,
+    writeBatch,
+    doc
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+const KOLEKSI = "history_karyawan";
+
+let semuaHistory = [];
+let unsubscribeHistory = null;
+let sedangLogin = false;
+let sedangMemeriksa = false;
+
+const $ = id => document.getElementById(id);
+
+/* TANGGAL */
+
+function updateTanggal() {
+    $("tanggalHariIni").textContent =
+        new Date().toLocaleDateString("id-ID", {
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
+        });
+}
+updateTanggal();
+
+/* NAVIGASI */
+
+window.kembali = function() {
+    window.location.href = "dashboard.html";
+};
+
+/* STATUS */
+
+function status(text, jenis = "") {
+    $("teksKoneksi").textContent = text;
+    $("statusKoneksi").className = "connection " + jenis;
+}
+
+function tampilError(text) {
+    $("pesanError").style.display = "block";
+    $("pesanError").textContent = text;
+}
+
+function sembunyikanError() {
+    $("pesanError").style.display = "none";
+    $("pesanError").textContent = "";
+}
+
+/* FORMAT TANGGAL */
+
+function tanggalDate(item) {
+    if (item.createdAt && typeof item.createdAt.toDate === "function") {
+        return item.createdAt.toDate();
+    }
+
+    if (item.tanggal) {
+        const d = new Date(item.tanggal);
+        if (!isNaN(d.getTime())) return d;
+    }
+
+    return null;
+}
+
+function kunciTanggalLokal(item) {
+    const d = tanggalDate(item);
+    if (!d) return "";
+
+    const tahun = d.getFullYear();
+    const bulan = String(d.getMonth() + 1).padStart(2, "0");
+    const hari = String(d.getDate()).padStart(2, "0");
+
+    return `${tahun}-${bulan}-${hari}`;
+}
+
+function formatTanggal(item) {
+    const d = tanggalDate(item);
+    if (!d) return "-";
+
+    return d.toLocaleDateString("id-ID", {
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+    }) + " " + d.toLocaleTimeString("id-ID", {
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit"
+    });
+}
+
+/* KATEGORI AKTIVITAS */
+
+function kelasAktivitas(jenis) {
+    switch (String(jenis || "").toUpperCase()) {
+        case "TAMBAH": return "tambah";
+        case "EDIT": return "edit";
+        case "HAPUS": return "hapus";
+        case "LOGIN": return "login";
+        default: return "other";
+    }
+}
+
+function namaAktivitas(jenis) {
+    const nama = {
+        TAMBAH:"PENAMBAHAN",
+        EDIT:"PERUBAHAN",
+        HAPUS:"PENGHAPUSAN",
+        LOGIN:"LOGIN",
+        LAINNYA:"LAINNYA"
+    };
+
+    const key = String(jenis || "LAINNYA").toUpperCase();
+    return nama[key] || key;
+}
+
+/* URUTKAN HISTORY */
+
+function urutkanHistory(data) {
+    return data.sort((a,b) => {
+        const da = tanggalDate(a);
+        const dbb = tanggalDate(b);
+
+        return (dbb?.getTime() || 0) - (da?.getTime() || 0);
+    });
+}
+
+/* STATISTIK */
+
+function updateStatistik(data) {
+    $("totalAktivitas").textContent = data.length;
+
+    $("totalTambah").textContent = data.filter(x =>
+        String(x.jenis || "").toUpperCase() === "TAMBAH"
+    ).length;
+
+    $("totalEdit").textContent = data.filter(x =>
+        String(x.jenis || "").toUpperCase() === "EDIT"
+    ).length;
+
+    $("totalHapus").textContent = data.filter(x =>
+        String(x.jenis || "").toUpperCase() === "HAPUS"
+    ).length;
+}
+
+/* FILTER DATA */
+
+function dataTerfilter() {
+    const cari = $("cari").value.toLowerCase().trim();
+    const jenis = $("filterJenis").value;
+    const tanggal = $("filterTanggal").value;
+
+    return semuaHistory.filter(item => {
+        const nik = String(item.nik || "").toLowerCase();
+        const nama = String(item.nama || "").toLowerCase();
+
+        const cocokCari = nik.includes(cari) || nama.includes(cari);
+
+        const cocokJenis =
+            !jenis ||
+            String(item.jenis || "").toUpperCase() === jenis;
+
+        const tanggalData = kunciTanggalLokal(item);
+        const cocokTanggal = !tanggal || tanggalData === tanggal;
+
+        return cocokCari && cocokJenis && cocokTanggal;
+    });
+}
+
+/* TAMPILKAN HISTORY */
+
+function tampilkanHistory() {
+    updateStatistik(semuaHistory);
+
+    const hasil = dataTerfilter();
+    const tbody = $("isiHistory");
+
+    tbody.innerHTML = "";
+
+    $("jumlahTampil").textContent = hasil.length + " Aktivitas";
+    $("pesanKosong").style.display = hasil.length ? "none" : "block";
+
+    hasil.forEach((item,index) => {
+        const tr = document.createElement("tr");
+
+        const nilai = [
+            index + 1,
+            formatTanggal(item),
+            null,
+            item.nik || "-",
+            item.nama || "-",
+            item.keterangan || "-",
+            item.petugas || "-",
+            item.halaman || "-"
+        ];
+
+        nilai.forEach((value,i) => {
+            const td = document.createElement("td");
+
+            if (i === 2) {
+                const span = document.createElement("span");
+                span.className = "activity " + kelasAktivitas(item.jenis);
+                span.textContent = namaAktivitas(item.jenis);
+                td.appendChild(span);
+            } else {
+                td.textContent = value;
+            }
+
+            tr.appendChild(td);
+        });
+
+        const tdDetail = document.createElement("td");
+        const btn = document.createElement("button");
+
+        btn.className = "detail-btn";
+        btn.textContent = "LIHAT";
+        btn.addEventListener("click", () => lihatDetail(item));
+
+        tdDetail.appendChild(btn);
+        tr.appendChild(tdDetail);
+        tbody.appendChild(tr);
+    });
+}
+
+/* DETAIL HISTORY */
+
+function lihatDetail(item) {
+    const detail = item.detail || {};
+
+    const daftar = [
+        ["ID HISTORY",item.id],
+        ["TANGGAL",formatTanggal(item)],
+        ["JENIS AKTIVITAS",namaAktivitas(item.jenis)],
+        ["NIK KARYAWAN",item.nik],
+        ["NAMA KARYAWAN",item.nama],
+        ["KETERANGAN",item.keterangan],
+        ["PETUGAS",item.petugas],
+        ["EMAIL PETUGAS",item.emailPetugas],
+        ["UID PETUGAS",item.uidPetugas],
+        ["HALAMAN ASAL",item.halaman],
+        ["DETAIL PERUBAHAN",JSON.stringify(detail,null,2)]
+    ];
+
+    const target = $("isiDetail");
+    target.innerHTML = "";
+
+    daftar.forEach(([judul,isi]) => {
+        const div = document.createElement("div");
+        div.className = "detail-row";
+
+        const strong = document.createElement("strong");
+        strong.textContent = judul;
+        div.appendChild(strong);
+
+        if (judul === "DETAIL PERUBAHAN") {
+            const pre = document.createElement("pre");
+            pre.textContent = isi || "-";
+            div.appendChild(pre);
+        } else {
+            const span = document.createElement("span");
+            span.textContent = isi || "-";
+            div.appendChild(span);
+        }
+
+        target.appendChild(div);
+    });
+
+    $("modalDetail").style.display = "flex";
+}
+
+window.tutupDetail = function() {
+    $("modalDetail").style.display = "none";
+};
+
+/* FIRESTORE REALTIME */
+
+function muatHistory() {
+    if (!sedangLogin) return;
+
+    if (unsubscribeHistory) {
+        unsubscribeHistory();
+        unsubscribeHistory = null;
+    }
+
+    status("Menghubungkan ke Cloud Firestore...");
+    sembunyikanError();
+
+    unsubscribeHistory = onSnapshot(
+        collection(db, KOLEKSI),
+
+        snapshot => {
+            semuaHistory = snapshot.docs.map(d => ({
+                id:d.id,
+                ...d.data()
+            }));
+
+            urutkanHistory(semuaHistory);
+
+            status(
+                "Terhubung ke Firebase. " +
+                semuaHistory.length +
+                " riwayat berhasil dimuat.",
+                "ok"
+            );
+
+            tampilkanHistory();
+        },
+
+        error => {
+            console.error("Gagal membaca history:", error);
+
+            semuaHistory = [];
+            tampilkanHistory();
+
+            status("Gagal membaca data Firestore.", "error");
+
+            if (error.code === "permission-denied") {
+                tampilError(
+                    "AKSES DITOLAK (permission-denied).\n\n" +
+                    "Firestore menolak pembacaan koleksi history_karyawan.\n\n" +
+                    "Pastikan Security Rules sudah diperbarui dan dipublikasikan. " +
+                    "Pastikan dokumen users/" + auth.currentUser?.uid +
+                    " memiliki role super_admin dan status aktif."
+                );
+            } else {
+                tampilError(
+                    "Gagal memuat history: " +
+                    (error.message || "Kesalahan tidak diketahui")
+                );
+            }
+        }
+    );
+}
+
+/* REFRESH */
+
+$("btnRefresh").addEventListener("click", () => {
+    if (!sedangLogin) return;
+    muatHistory();
+});
+
+/* FILTER */
+
+$("cari").addEventListener("input", tampilkanHistory);
+$("filterJenis").addEventListener("change", tampilkanHistory);
+$("filterTanggal").addEventListener("change", tampilkanHistory);
+
+/* EXPORT EXCEL */
+
+function exportExcel() {
+    const data = dataTerfilter();
+
+    if (!data.length) {
+        alert("Tidak ada data history untuk diexport.");
+        return;
+    }
+
+    if (typeof XLSX === "undefined") {
+        alert("Library Excel belum tersedia.");
+        return;
+    }
+
+    const excelData = data.map((item,index) => ({
+        "No":index + 1,
+        "Tanggal & Waktu":formatTanggal(item),
+        "Jenis Aktivitas":namaAktivitas(item.jenis),
+        "NIK":item.nik || "-",
+        "Nama Karyawan":item.nama || "-",
+        "Keterangan":item.keterangan || "-",
+        "Petugas":item.petugas || "-",
+        "Email Petugas":item.emailPetugas || "-",
+        "UID Petugas":item.uidPetugas || "-",
+        "Halaman":item.halaman || "-",
+        "Detail":JSON.stringify(item.detail || {})
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(excelData);
+
+    ws["!cols"] = [
+        {wch:6},{wch:23},{wch:18},{wch:18},{wch:25},
+        {wch:40},{wch:22},{wch:30},{wch:30},{wch:25},{wch:50}
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,"History Karyawan");
+
+    XLSX.writeFile(wb,"History_Karyawan_SITER.xlsx");
+}
+
+$("btnExport").addEventListener("click",exportExcel);
+
+/* HAPUS SEMUA HISTORY */
+
+async function hapusSemuaHistory() {
+    if (!sedangLogin) return;
+
+    if (!semuaHistory.length) {
+        alert("Belum ada history untuk dihapus.");
+        return;
+    }
+
+    const yakin = confirm(
+        "PERINGATAN!\n\n" +
+        "Anda akan menghapus SELURUH riwayat aktivitas di Cloud Firestore.\n\n" +
+        "Tindakan ini tidak dapat dibatalkan.\n\nLanjutkan?"
+    );
+
+    if (!yakin) return;
+
+    const tombol = $("btnDelete");
+    tombol.disabled = true;
+    tombol.textContent = "MENGHAPUS...";
+
+    try {
+        const snapshot = await getDocs(collection(db, KOLEKSI));
+        const dokumen = snapshot.docs;
+
+        for (let i = 0; i < dokumen.length; i += 450) {
+            const batch = writeBatch(db);
+
+            dokumen.slice(i,i + 450).forEach(d => {
+                batch.delete(doc(db, KOLEKSI, d.id));
+            });
+
+            await batch.commit();
+        }
+
+        alert("Seluruh history berhasil dihapus dari Firestore.");
+
+    } catch(error) {
+        console.error("Gagal menghapus history:", error);
+
+        alert(
+            "Gagal menghapus history.\n\n" +
+            (error.message || "Kesalahan tidak diketahui")
+        );
+
+    } finally {
+        tombol.disabled = false;
+        tombol.textContent = "🗑 HAPUS HISTORY";
+    }
+}
+
+$("btnDelete").addEventListener("click",hapusSemuaHistory);
+
+/* AUTENTIKASI DAN PEMERIKSAAN SUPER ADMIN */
+
+onAuthStateChanged(auth, async user => {
+    if (sedangMemeriksa) return;
+
+    if (!user) {
+        sedangLogin = false;
+        $("btnDelete").disabled = true;
+
+        if (unsubscribeHistory) {
+            unsubscribeHistory();
+            unsubscribeHistory = null;
+        }
+
+        status("Belum login. Mengarahkan ke halaman login.");
+        window.location.replace("index.html");
+        return;
+    }
+
+    sedangMemeriksa = true;
+    sedangLogin = false;
+    $("btnDelete").disabled = true;
+
+    if (unsubscribeHistory) {
+        unsubscribeHistory();
+        unsubscribeHistory = null;
+    }
+
+    status("Memeriksa hak akses Super Admin...");
+    sembunyikanError();
+
+    try {
+        const profilRef = doc(db,"users",user.uid);
+        const profilSnap = await getDoc(profilRef);
+
+        if (!profilSnap.exists()) {
+            throw new Error(
+                "Dokumen profil users/" + user.uid +
+                " tidak ditemukan. Periksa dokumen profil pengguna di Firestore."
+            );
+        }
+
+        const profil = profilSnap.data();
+
+        const role = String(profil.role || "").trim().toLowerCase();
+        const statusUser = String(profil.status || "").trim().toLowerCase();
+
+        if (role !== "super_admin") {
+            throw new Error(
+                "Role akun ini adalah '" + (profil.role || "kosong") +
+                "'. Halaman ini hanya dapat dibuka oleh super_admin."
+            );
+        }
+
+        if (statusUser !== "aktif") {
+            throw new Error(
+                "Status akun adalah '" + (profil.status || "kosong") +
+                "'. Akun harus berstatus aktif."
+            );
+        }
+
+        sedangLogin = true;
+        $("btnDelete").disabled = false;
+
+        status("Akses Super Admin terverifikasi. Memuat history...", "ok");
+
+        muatHistory();
+
+    } catch(error) {
+        console.error("Pemeriksaan akses gagal:",error);
+
+        sedangLogin = false;
+        $("btnDelete").disabled = true;
+
+        status("Gagal memeriksa hak akses.", "error");
+
+        if (error.code === "permission-denied") {
+            tampilError(
+                "AKSES PROFIL DITOLAK.\n\n" +
+                "Akun berhasil login, tetapi tidak diizinkan membaca dokumen " +
+                "users miliknya sendiri. Periksa Security Rules pada koleksi users."
+            );
+        } else {
+            tampilError(error.message || "Gagal memeriksa hak akses.");
+        }
+
+    } finally {
+        sedangMemeriksa = false;
+    }
+});
+
+</script>
+</body>
+</html>

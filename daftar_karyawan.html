@@ -1,0 +1,1188 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+
+<title>Data Karyawan SITER</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --navy: #102b46;
+    --blue: #1d4e78;
+    --gold: #d5ae65;
+    --white: #ffffff;
+    --bg: #f1f5f9;
+    --text: #263445;
+    --muted: #64748b;
+    --border: #dbe3ec;
+    --red: #dc3545;
+    --green: #15803d;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+/* HEADER */
+
+header {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: white;
+    padding: 18px 16px;
+    border-bottom: 4px solid var(--gold);
+}
+
+.header-top {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.header-date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.calendar-icon {
+    font-size: 30px;
+}
+
+.date-text {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.date-text strong {
+    display: block;
+    font-size: 15px;
+}
+
+/* BUTTON */
+
+.btn {
+    border: none;
+    padding: 11px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn:active {
+    transform: scale(.98);
+}
+
+.btn-primary {
+    background: var(--navy);
+    color: white;
+}
+
+.btn-gold {
+    background: var(--gold);
+    color: var(--navy);
+}
+
+.btn-green {
+    background: var(--green);
+    color: white;
+}
+
+.btn-gray {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* CONTAINER */
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 16px;
+}
+
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* MESSAGE */
+
+.message {
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    display: none;
+    overflow-wrap: anywhere;
+}
+
+.message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    display: block;
+}
+
+.message.success {
+    background: #dcfce7;
+    color: #166534;
+    display: block;
+}
+
+.message.warning {
+    background: #fef3c7;
+    color: #92400e;
+    display: block;
+}
+
+.message.loading {
+    background: #dbeafe;
+    color: #1e40af;
+    display: block;
+}
+
+/* CARD */
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 3px 12px rgba(15, 35, 60, .06);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+}
+
+/* SEARCH TITLE */
+
+.card-title {
+    font-size: 17px;
+    color: var(--navy);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* SEARCH */
+
+.search-area {
+    margin-bottom: 12px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border: 1.5px solid transparent;
+    border-radius: 10px;
+    padding: 0 12px;
+    background:
+        linear-gradient(white, white) padding-box,
+        linear-gradient(110deg, #1d4e78, #d5ae65) border-box;
+    box-shadow: 0 2px 8px rgba(16, 43, 70, .07);
+}
+
+.search-icon {
+    font-size: 20px;
+    color: var(--blue);
+    flex-shrink: 0;
+}
+
+.search-box input {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 0;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    color: var(--text);
+    box-shadow: none;
+}
+
+.search-box input:focus {
+    box-shadow: none;
+}
+
+.info {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 10px 0;
+}
+
+/* TABLE */
+
+.table-wrap {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+}
+
+th {
+    background: var(--navy);
+    color: white;
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+tbody tr:hover {
+    background: #eef4fa;
+}
+
+.employee-row {
+    cursor: pointer;
+}
+
+.employee-row:active {
+    background: #dbeafe;
+}
+
+/* STATUS */
+
+.badge {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.badge-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* EMPTY */
+
+.empty {
+    text-align: center;
+    padding: 30px 15px;
+    color: var(--muted);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* EDIT INSTRUCTION */
+
+.edit-instruction {
+    background: #f8fafc;
+    border-left: 4px solid var(--gold);
+    border-radius: 7px;
+    padding: 12px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--navy);
+    font-weight: bold;
+}
+
+/* PAGINATION */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.page-info {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+}
+
+/* FOOTER */
+
+.footer {
+    text-align: center;
+    padding: 22px 15px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 10px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+    .header-top {
+        align-items: center;
+    }
+
+    .header-date {
+        flex: 1;
+    }
+
+    .header-top .btn {
+        width: auto;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .navbar .btn {
+        flex: 1;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    .pagination .btn {
+        flex: 1;
+    }
+
+    .date-text strong {
+        font-size: 13px;
+    }
+
+    .card-title {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+    <div class="header-top">
+
+        <div class="header-date">
+
+            <span class="calendar-icon">📅</span>
+
+            <div class="date-text">
+                <strong id="tanggalHariIni">
+                    Memuat tanggal...
+                </strong>
+                <span>Sistem Informasi Terpadu</span>
+            </div>
+
+        </div>
+
+        <a href="dashboard.html" class="btn btn-gold">
+            ← Kembali
+        </a>
+
+    </div>
+</header>
+
+
+<div class="container">
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <a href="input_karyawan.html"
+           class="btn btn-primary">
+            + Input Karyawan
+        </a>
+
+        <a href="statistik_karyawan.html"
+           class="btn btn-green">
+            📊 Statistik Karyawan
+        </a>
+
+        <button id="btnRefresh"
+                class="btn btn-gray">
+            ↻ Refresh
+        </button>
+
+    </div>
+
+
+    <!-- PESAN -->
+
+    <div id="message" class="message"></div>
+
+
+    <!-- CONTENT -->
+
+    <div id="appContent" class="hidden">
+
+        <div class="card">
+
+            <!-- JUDUL PENCARIAN -->
+
+            <h2 class="card-title">
+                Disini, cari data karyawan....
+            </h2>
+
+
+            <!-- KOLOM PENCARIAN -->
+
+            <div class="search-area">
+
+                <div class="search-box">
+
+                    <span class="search-icon">⌕</span>
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Cari NIK atau nama karyawan..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="info">
+                <span id="infoData">
+                    Memuat data...
+                </span>
+            </div>
+
+
+            <!-- TABEL DATA KARYAWAN -->
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>NIK</th>
+                            <th>Nama</th>
+                            <th>Divisi</th>
+                            <th>Departemen</th>
+                            <th>Jabatan</th>
+                            <th>TMK</th>
+                            <th>POH</th>
+                            <th>Sistem Cuti</th>
+                            <th>Shift Kerja</th>
+                            <th>Grade</th>
+                            <th>No. WA</th>
+                            <th>Status</th>
+                            <th>Hak Akses</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tableBody"></tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- DATA KOSONG -->
+
+            <div id="emptyData" class="empty hidden">
+                Tidak ada data karyawan.
+            </div>
+
+
+            <!-- INSTRUKSI EDIT -->
+
+            <div class="edit-instruction">
+                **) Klik 2X pada nama di dalam tabel untuk edit data karyawan
+            </div>
+
+
+            <!-- PAGINATION -->
+
+            <div class="pagination">
+
+                <button
+                    id="btnPrev"
+                    class="btn btn-gray">
+                    ← Sebelumnya
+                </button>
+
+                <span id="pageInfo" class="page-info">
+                    Halaman 1
+                </span>
+
+                <button
+                    id="btnNext"
+                    class="btn btn-gray">
+                    Selanjutnya →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+    <strong>
+        Created By : Heti Administration Officer
+    </strong>
+
+    <br>
+
+    For Operasional Pelabuhan Terminal Khusus
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// ========================================
+// KONFIGURASI FIREBASE
+// ========================================
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyATkV03GiAyCZoGWrgmoUx1t4vo-WwmWKk",
+
+    authDomain: "siter-khusus.firebaseapp.com",
+
+    projectId: "siter-khusus",
+
+    storageBucket: "siter-khusus.firebasestorage.app",
+
+    messagingSenderId: "129237115311",
+
+    appId: "1:129237115311:web:a99b886287cfd8a6534f5a"
+
+};
+
+
+// ========================================
+// FIREBASE
+// ========================================
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+
+// ========================================
+// ELEMENT
+// ========================================
+
+const message = document.getElementById("message");
+
+const appContent = document.getElementById("appContent");
+
+const tableBody = document.getElementById("tableBody");
+
+const emptyData = document.getElementById("emptyData");
+
+const infoData = document.getElementById("infoData");
+
+const searchInput = document.getElementById("searchInput");
+
+const tanggalHariIni = document.getElementById("tanggalHariIni");
+
+const pageInfo = document.getElementById("pageInfo");
+
+const btnRefresh = document.getElementById("btnRefresh");
+
+const btnPrev = document.getElementById("btnPrev");
+
+const btnNext = document.getElementById("btnNext");
+
+
+// ========================================
+// TANGGAL
+// ========================================
+
+function tampilkanTanggal() {
+
+    const sekarang = new Date();
+
+    tanggalHariIni.textContent =
+        sekarang.toLocaleDateString("id-ID", {
+
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+
+        });
+
+}
+
+tampilkanTanggal();
+
+
+// ========================================
+// DATA
+// ========================================
+
+let dataKaryawan = [];
+
+let dataTampil = [];
+
+let halaman = 1;
+
+const dataPerHalaman = 5;
+
+
+// ========================================
+// PESAN
+// ========================================
+
+function showMessage(text, type = "loading") {
+
+    message.textContent = text;
+
+    message.className = "message " + type;
+
+}
+
+function hideMessage() {
+
+    message.textContent = "";
+
+    message.className = "message";
+
+}
+
+
+// ========================================
+// FORMAT DATA
+// ========================================
+
+function getValue(data, key) {
+
+    const value = data[key];
+
+    if (value === undefined || value === null) {
+        return "";
+    }
+
+    return String(value).trim();
+
+}
+
+
+// ========================================
+// STATUS
+// ========================================
+
+function isAktif(status) {
+
+    const value = String(status || "")
+        .trim()
+        .toLowerCase();
+
+    return [
+        "aktif",
+        "active",
+        "1",
+        "true"
+    ].includes(value);
+
+}
+
+
+// ========================================
+// LOAD FIRESTORE
+// ========================================
+
+async function loadData() {
+
+    showMessage(
+        "Mengambil data karyawan dari Firebase...",
+        "loading"
+    );
+
+    btnRefresh.disabled = true;
+
+    try {
+
+        const snapshot = await getDocs(
+            collection(db, "karyawan")
+        );
+
+        dataKaryawan = [];
+
+        snapshot.forEach((doc) => {
+
+            const data = doc.data();
+
+            dataKaryawan.push({
+
+                id: doc.id,
+
+                nik: getValue(data, "nik") || doc.id,
+
+                nama: getValue(data, "nama"),
+
+                divisi: getValue(data, "divisi"),
+
+                departemen: getValue(data, "departemen"),
+
+                jabatan: getValue(data, "jabatan"),
+
+                tmk: getValue(data, "tmk"),
+
+                poh: getValue(data, "poh"),
+
+                sistem_cuti: getValue(data, "sistem_cuti"),
+
+                shift_kerja: getValue(data, "shift_kerja"),
+
+                grade: getValue(data, "grade"),
+
+                nowa: getValue(data, "nowa"),
+
+                status: getValue(data, "status"),
+
+                hak_akses: getValue(data, "hak_akses")
+
+            });
+
+        });
+
+
+        // URUTKAN BERDASARKAN NAMA
+
+        dataKaryawan.sort((a, b) => {
+
+            return a.nama.localeCompare(
+                b.nama,
+                "id",
+                {
+                    sensitivity: "base"
+                }
+            );
+
+        });
+
+
+        halaman = 1;
+
+        appContent.classList.remove("hidden");
+
+        hideMessage();
+
+        searchData();
+
+    } catch (error) {
+
+        console.error("Firebase Error:", error);
+
+        let pesan = "Gagal mengambil data.";
+
+        if (error.code === "permission-denied") {
+
+            pesan =
+                "Akses ditolak Firestore. Periksa Firebase Authentication dan Firestore Security Rules.";
+
+        } else if (error.code === "unavailable") {
+
+            pesan =
+                "Firebase tidak tersedia. Periksa koneksi internet.";
+
+        } else if (error.code === "unauthenticated") {
+
+            pesan =
+                "Sesi login tidak valid. Silakan login kembali.";
+
+        } else {
+
+            pesan += " " + error.message;
+
+        }
+
+        showMessage(pesan, "error");
+
+        infoData.textContent = "Gagal memuat data.";
+
+    } finally {
+
+        btnRefresh.disabled = false;
+
+    }
+
+}
+
+
+// ========================================
+// PENCARIAN
+// HANYA NIK DAN NAMA
+// ========================================
+
+function searchData() {
+
+    const keyword = searchInput.value
+        .trim()
+        .toLowerCase();
+
+    if (!keyword) {
+
+        dataTampil = [...dataKaryawan];
+
+    } else {
+
+        dataTampil = dataKaryawan.filter((item) => {
+
+            return [
+
+                item.nik,
+                item.nama
+
+            ].some(value =>
+
+                String(value || "")
+                    .toLowerCase()
+                    .includes(keyword)
+
+            );
+
+        });
+
+    }
+
+    halaman = 1;
+
+    renderTable();
+
+}
+
+
+// ========================================
+// RENDER TABEL
+// ========================================
+
+function renderTable() {
+
+    tableBody.innerHTML = "";
+
+    const total = dataTampil.length;
+
+    const totalHalaman = Math.max(
+        1,
+        Math.ceil(total / dataPerHalaman)
+    );
+
+    if (halaman > totalHalaman) {
+        halaman = totalHalaman;
+    }
+
+    const mulai = (halaman - 1) * dataPerHalaman;
+
+    const selesai = mulai + dataPerHalaman;
+
+    const dataHalaman = dataTampil.slice(
+        mulai,
+        selesai
+    );
+
+    emptyData.classList.toggle(
+        "hidden",
+        total !== 0
+    );
+
+
+    dataHalaman.forEach((item, index) => {
+
+        const tr = document.createElement("tr");
+
+        tr.className = "employee-row";
+
+        const nomor = mulai + index + 1;
+
+        const fields = [
+
+            nomor,
+            item.nik,
+            item.nama,
+            item.divisi,
+            item.departemen,
+            item.jabatan,
+            item.tmk,
+            item.poh,
+            item.sistem_cuti,
+            item.shift_kerja,
+            item.grade,
+            item.nowa,
+            item.status,
+            item.hak_akses
+
+        ];
+
+
+        fields.forEach((value, fieldIndex) => {
+
+            const td = document.createElement("td");
+
+            if (fieldIndex === 12) {
+
+                const badge = document.createElement("span");
+
+                badge.className =
+                    "badge " +
+                    (isAktif(value)
+                        ? "badge-active"
+                        : "badge-inactive");
+
+                badge.textContent = value || "-";
+
+                td.appendChild(badge);
+
+            } else {
+
+                td.textContent = value || "-";
+
+            }
+
+            // KLIK DUA KALI KHUSUS PADA NAMA
+
+            if (fieldIndex === 2) {
+
+                td.addEventListener("dblclick", () => {
+                    editKaryawan(item.nik);
+                });
+
+                td.style.fontWeight = "bold";
+                td.style.color = "var(--navy)";
+
+            }
+
+            tr.appendChild(td);
+
+        });
+
+        tableBody.appendChild(tr);
+
+    });
+
+
+    // INFO DATA
+
+    if (total === 0) {
+
+        infoData.textContent =
+            "Tidak ada data karyawan yang ditemukan.";
+
+    } else {
+
+        infoData.textContent =
+            "Menampilkan " +
+            (mulai + 1) +
+            " - " +
+            Math.min(selesai, total) +
+            " dari " +
+            total +
+            " data karyawan.";
+
+    }
+
+
+    // INFO HALAMAN
+
+    pageInfo.textContent =
+        "Halaman " +
+        halaman +
+        " dari " +
+        totalHalaman;
+
+
+    // TOMBOL PAGING
+
+    btnPrev.disabled = halaman <= 1;
+
+    btnNext.disabled = halaman >= totalHalaman;
+
+}
+
+
+// ========================================
+// EDIT KARYAWAN
+// ========================================
+
+function editKaryawan(nik) {
+
+    if (!nik) {
+
+        showMessage(
+            "NIK karyawan tidak ditemukan.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    window.location.href =
+        "input_karyawan.html?mode=edit&nik=" +
+        encodeURIComponent(nik);
+
+}
+
+
+// ========================================
+// PAGINATION
+// ========================================
+
+btnPrev.addEventListener("click", () => {
+
+    if (halaman > 1) {
+
+        halaman--;
+
+        renderTable();
+
+    }
+
+});
+
+
+btnNext.addEventListener("click", () => {
+
+    const totalHalaman = Math.ceil(
+        dataTampil.length / dataPerHalaman
+    );
+
+    if (halaman < totalHalaman) {
+
+        halaman++;
+
+        renderTable();
+
+    }
+
+});
+
+
+// ========================================
+// EVENT SEARCH
+// ========================================
+
+searchInput.addEventListener(
+    "input",
+    searchData
+);
+
+
+// ========================================
+// REFRESH
+// ========================================
+
+btnRefresh.addEventListener(
+    "click",
+    loadData
+);
+
+
+// ========================================
+// AUTHENTICATION
+// ========================================
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        showMessage(
+            "Anda belum login. Mengarahkan ke halaman login...",
+            "warning"
+        );
+
+        setTimeout(() => {
+
+            window.location.href = "index.html";
+
+        }, 1000);
+
+        return;
+
+    }
+
+    await loadData();
+
+});
+
+</script>
+
+</body>
+</html>

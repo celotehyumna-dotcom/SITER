@@ -1,0 +1,1110 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+<title>Statistik Karyawan SITER</title>
+
+<style>
+:root {
+    --navy:#102b46;
+    --navy2:#1c4569;
+    --gold:#d6a94d;
+    --bg:#eef2f7;
+    --white:#fff;
+    --text:#243447;
+    --muted:#718096;
+    --border:#dce3eb;
+    --green:#16865b;
+    --red:#d64b4b;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+header {
+    background:var(--navy);
+    color:white;
+    padding:13px 17px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    box-shadow:0 3px 10px #0002;
+}
+
+.header-left {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.calendar {
+    font-size:25px;
+}
+
+.date-info strong {
+    font-size:13px;
+}
+
+.back-btn {
+    background:var(--gold);
+    border:none;
+    color:var(--navy);
+    font-weight:bold;
+    padding:9px 14px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.container {
+    max-width:1100px;
+    margin:auto;
+    padding:20px 14px 30px;
+}
+
+.page-title {
+    text-align:center;
+    margin:8px 0 22px;
+}
+
+.page-title h2 {
+    color:var(--navy);
+    font-size:21px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+.gold-line {
+    width:65px;
+    height:3px;
+    background:var(--gold);
+    margin:12px auto;
+    border-radius:5px;
+}
+
+.page-title p {
+    color:#8a6b2e;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1.5px;
+}
+
+.section-title {
+    font-size:14px;
+    font-weight:bold;
+    color:var(--navy);
+    margin:24px 0 12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.total-card {
+    background:linear-gradient(120deg,var(--navy),var(--navy2));
+    color:white;
+    padding:21px;
+    border-radius:11px;
+    border-left:5px solid var(--gold);
+    box-shadow:0 4px 12px #00000012;
+    margin-bottom:14px;
+}
+
+.total-card .icon {
+    font-size:25px;
+    margin-bottom:9px;
+}
+
+.total-card .label {
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.total-card .number {
+    font-size:36px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.total-card .desc {
+    font-size:11px;
+    color:#d8e3ef;
+    margin-top:5px;
+}
+
+.summary-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+}
+
+.summary-panel {
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 3px 10px #0000000b;
+    min-width:0;
+}
+
+.summary-panel h3 {
+    color:var(--navy);
+    font-size:12px;
+    margin-bottom:12px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+}
+
+.summary-item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:10px 0;
+    border-bottom:1px solid #edf0f4;
+    font-size:11px;
+}
+
+.summary-item:last-child {
+    border-bottom:none;
+}
+
+.summary-item span:first-child {
+    color:#526274;
+    overflow-wrap:anywhere;
+}
+
+.summary-item strong {
+    color:var(--navy);
+    font-size:17px;
+    white-space:nowrap;
+}
+
+.status-active {
+    color:var(--green)!important;
+}
+
+.status-inactive {
+    color:var(--red)!important;
+}
+
+.chart-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+}
+
+.chart-panel {
+    background:white;
+    padding:17px;
+    border-radius:10px;
+    box-shadow:0 3px 10px #0000000b;
+    min-width:0;
+}
+
+.chart-panel h3 {
+    color:var(--navy);
+    font-size:13px;
+    margin-bottom:18px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+}
+
+.chart-list {
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.chart-info {
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    font-size:11px;
+    margin-bottom:6px;
+}
+
+.chart-info span {
+    overflow-wrap:anywhere;
+}
+
+.chart-info strong {
+    color:var(--navy);
+    white-space:nowrap;
+}
+
+.bar-bg {
+    height:10px;
+    width:100%;
+    background:#edf1f5;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.bar {
+    height:100%;
+    border-radius:10px;
+    background:linear-gradient(90deg,var(--navy),#4385b5);
+    transition:width .4s;
+}
+
+.empty {
+    text-align:center;
+    color:var(--muted);
+    padding:18px 5px;
+    font-size:12px;
+}
+
+.refresh-area {
+    display:flex;
+    justify-content:center;
+    margin-top:22px;
+}
+
+.refresh-btn {
+    background:var(--navy);
+    color:white;
+    border:none;
+    border-radius:7px;
+    padding:11px 19px;
+    font-weight:bold;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.refresh-btn:disabled {
+    opacity:.6;
+}
+
+.info-box {
+    padding:12px;
+    margin:12px 0;
+    border-radius:8px;
+    font-size:12px;
+    line-height:1.6;
+    display:none;
+    overflow-wrap:anywhere;
+}
+
+.info-loading {
+    display:block;
+    background:#e5eef8;
+    color:#17446c;
+}
+
+.info-error {
+    display:block;
+    background:#fdeaea;
+    color:#a52e2e;
+}
+
+.info-success {
+    display:block;
+    background:#e5f5ec;
+    color:#17633e;
+}
+
+footer {
+    background:var(--navy);
+    color:white;
+    text-align:center;
+    padding:18px 10px;
+    margin-top:25px;
+    font-size:10px;
+    line-height:1.8;
+}
+
+footer strong {
+    color:var(--gold);
+}
+
+@media(max-width:700px) {
+    .chart-grid {
+        grid-template-columns:1fr;
+    }
+
+    .page-title h2 {
+        font-size:18px;
+    }
+
+    .total-card .number {
+        font-size:32px;
+    }
+}
+
+@media(max-width:350px) {
+    .container {
+        padding:15px 9px;
+    }
+
+    .summary-panel {
+        padding:11px 9px;
+    }
+
+    .summary-panel h3 {
+        font-size:10px;
+    }
+
+    .summary-item {
+        font-size:10px;
+    }
+
+    .summary-item strong {
+        font-size:15px;
+    }
+
+    .back-btn {
+        padding:8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-left">
+        <span class="calendar">📅</span>
+        <div class="date-info">
+            <strong id="tanggal">Memuat tanggal...</strong>
+        </div>
+    </div>
+
+    <button class="back-btn" onclick="kembali()">
+        ↩ KEMBALI
+    </button>
+</header>
+
+<main class="container">
+
+    <div class="page-title">
+        <h2>STATISTIK KARYAWAN</h2>
+        <div class="gold-line"></div>
+        <p>SATU DATA, SATU SISTEM, SATU TUJUAN</p>
+    </div>
+
+    <div id="pesan" class="info-box"></div>
+
+    <div class="section-title">
+        📊 RINGKASAN DATA KARYAWAN
+    </div>
+
+    <div class="total-card">
+        <div class="icon">👥</div>
+        <div class="label">TOTAL JUMLAH KARYAWAN</div>
+        <div class="number" id="total">0</div>
+        <div class="desc">Seluruh karyawan dalam collection karyawan</div>
+    </div>
+
+    <div class="summary-grid">
+
+        <div class="summary-panel">
+            <h3>🏢 BERDASARKAN DIVISI</h3>
+            <div id="ringkasanDivisi"></div>
+        </div>
+
+        <div class="summary-panel">
+            <h3>🏢 BERDASARKAN DEPARTEMEN</h3>
+            <div id="ringkasanDepartemen"></div>
+        </div>
+
+        <div class="summary-panel">
+            <h3>📋 STATUS KARYAWAN</h3>
+            <div id="ringkasanStatus"></div>
+        </div>
+
+        <div class="summary-panel">
+            <h3>🕒 SHIFT KERJA</h3>
+            <div id="ringkasanShift"></div>
+        </div>
+
+        <div class="summary-panel">
+            <h3>👥 KELOMPOK KERJA</h3>
+            <div id="ringkasanGrup"></div>
+        </div>
+
+        <div class="summary-panel">
+            <h3>📊 SISTEM CUTI</h3>
+            <div id="ringkasanCuti"></div>
+        </div>
+
+    </div>
+
+    <div class="section-title">
+        📈 GRAFIK STATISTIK KARYAWAN
+    </div>
+
+    <div class="chart-grid">
+
+        <div class="chart-panel">
+            <h3>🏢 BERDASARKAN DIVISI</h3>
+            <div class="chart-list" id="grafikDivisi"></div>
+        </div>
+
+        <div class="chart-panel">
+            <h3>🏢 BERDASARKAN DEPARTEMEN</h3>
+            <div class="chart-list" id="grafikDepartemen"></div>
+        </div>
+
+        <div class="chart-panel">
+            <h3>💼 BERDASARKAN JABATAN</h3>
+            <div class="chart-list" id="grafikJabatan"></div>
+        </div>
+
+        <div class="chart-panel">
+            <h3>📅 BERDASARKAN SISTEM CUTI</h3>
+            <div class="chart-list" id="grafikCuti"></div>
+        </div>
+
+        <div class="chart-panel">
+            <h3>🕒 BERDASARKAN SHIFT KERJA</h3>
+            <div class="chart-list" id="grafikShift"></div>
+        </div>
+
+        <div class="chart-panel">
+            <h3>🎖️ BERDASARKAN GRADE</h3>
+            <div class="chart-list" id="grafikGrade"></div>
+        </div>
+
+        <div class="chart-panel">
+            <h3>👥 BERDASARKAN GRUP</h3>
+            <div class="chart-list" id="grafikGrup"></div>
+        </div>
+
+    </div>
+
+    <div class="refresh-area">
+        <button class="refresh-btn" id="refreshBtn"
+                onclick="muatStatistik()">
+            ↻ MUAT ULANG STATISTIK
+        </button>
+    </div>
+
+</main>
+
+<footer>
+    <div>
+        Created By :
+        <strong>Heti Administration Officer</strong>
+    </div>
+    <div>
+        For Operasional Pelabuhan Terminal Khusus
+    </div>
+</footer>
+
+<script type="module">
+
+/* =========================================
+   FIREBASE SITER
+========================================= */
+
+import { db, auth } from "./firebase-config.js";
+
+import {
+    collection,
+    onSnapshot,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+
+/* =========================================
+   PENGATURAN
+========================================= */
+
+let dataKaryawan = [];
+let berhentiMendengar = null;
+let sedangMemuat = false;
+
+const koleksiKaryawan = collection(db, "karyawan");
+
+
+/* =========================================
+   TANGGAL OTOMATIS
+========================================= */
+
+function updateTanggal() {
+
+    document.getElementById("tanggal").textContent =
+        new Date().toLocaleDateString("id-ID", {
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
+        });
+
+}
+
+updateTanggal();
+
+
+/* =========================================
+   NAVIGASI
+========================================= */
+
+window.kembali = function() {
+    window.location.href = "dashboard.html";
+};
+
+
+/* =========================================
+   PESAN STATUS
+========================================= */
+
+function pesan(teks, jenis="info-loading") {
+
+    const el = document.getElementById("pesan");
+
+    el.className = "info-box " + jenis;
+    el.textContent = teks;
+
+}
+
+function hapusPesan() {
+
+    const el = document.getElementById("pesan");
+
+    el.className = "info-box";
+    el.textContent = "";
+
+}
+
+
+/* =========================================
+   MEMBACA FIELD DENGAN BEBERAPA NAMA
+========================================= */
+
+function nilai(obj, ...keys) {
+
+    for (const key of keys) {
+
+        if (
+            obj[key] !== undefined &&
+            obj[key] !== null &&
+            String(obj[key]).trim() !== ""
+        ) {
+            return String(obj[key]).trim();
+        }
+
+    }
+
+    return "-";
+
+}
+
+
+/* =========================================
+   NORMALISASI DATA FIRESTORE
+========================================= */
+
+function dataNormal(doc) {
+
+    const obj = doc.data();
+
+    return {
+
+        id:doc.id,
+
+        nik:nilai(obj,"nik","NIK"),
+
+        nama:nilai(
+            obj,
+            "nama",
+            "nama_karyawan",
+            "namaKaryawan",
+            "nama_lengkap"
+        ),
+
+        divisi:nilai(
+            obj,
+            "divisi",
+            "namaDivisi"
+        ),
+
+        departemen:nilai(
+            obj,
+            "departemen",
+            "department",
+            "namaDepartemen",
+            "bagian"
+        ),
+
+        jabatan:nilai(
+            obj,
+            "jabatan",
+            "posisi",
+            "namaJabatan"
+        ),
+
+        sistemCuti:nilai(
+            obj,
+            "sistem_cuti",
+            "sistemCuti",
+            "sistem cuti",
+            "cuti",
+            "jenisCuti",
+            "jenis_cuti"
+        ),
+
+        shift:nilai(
+            obj,
+            "shift_kerja",
+            "shiftKerja",
+            "shift",
+            "sistemShift"
+        ),
+
+        grade:nilai(
+            obj,
+            "grade",
+            "GRADE",
+            "golongan"
+        ),
+
+        grup:nilai(
+            obj,
+            "grup",
+            "group",
+            "grupKerja",
+            "groupKerja",
+            "kelompok"
+        ),
+
+        status:nilai(
+            obj,
+            "status",
+            "STATUS",
+            "statusKaryawan",
+            "status_karyawan"
+        )
+
+    };
+
+}
+
+
+/* =========================================
+   NORMALISASI TEKS
+========================================= */
+
+function normal(teks) {
+
+    return String(teks)
+        .toLowerCase()
+        .trim()
+        .replace(/[_-]/g," ")
+        .replace(/\s+/g," ");
+
+}
+
+
+/* =========================================
+   MENGHITUNG KELOMPOK DATA DINAMIS
+========================================= */
+
+function kelompok(data, kolom) {
+
+    const hasil = new Map();
+
+    data.forEach(item => {
+
+        const nama = item[kolom];
+
+        if (!nama || nama === "-") return;
+
+        const key = normal(nama);
+
+        if (!hasil.has(key)) {
+            hasil.set(key,{
+                nama:nama,
+                jumlah:0
+            });
+        }
+
+        hasil.get(key).jumlah++;
+
+    });
+
+    return Array.from(hasil.values())
+        .sort((a,b) => b.jumlah-a.jumlah);
+
+}
+
+
+/* =========================================
+   MENAMPILKAN RINGKASAN DINAMIS
+========================================= */
+
+function tampilkanRingkasan(elementId, daftar, kolom) {
+
+    const element = document.getElementById(elementId);
+
+    if (!daftar.length) {
+
+        element.innerHTML =
+            '<div class="empty">Belum ada data.</div>';
+
+        return;
+
+    }
+
+    element.innerHTML = daftar.map(item => {
+
+        let kelas = "";
+
+        if (kolom === "status") {
+
+            const status = normal(item.nama);
+
+            if (status === "aktif") {
+                kelas = "status-active";
+            } else {
+                kelas = "status-inactive";
+            }
+
+        }
+
+        return `
+            <div class="summary-item">
+                <span>${aman(item.nama)}</span>
+                <strong class="${kelas}">
+                    ${item.jumlah}
+                </strong>
+            </div>
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================================
+   GRAFIK BATANG DINAMIS
+========================================= */
+
+function buatGrafik(elementId, daftar) {
+
+    const element = document.getElementById(elementId);
+
+    if (!daftar.length) {
+
+        element.innerHTML =
+            '<div class="empty">Belum ada data.</div>';
+
+        return;
+
+    }
+
+    const maksimal = Math.max(
+        ...daftar.map(item => item.jumlah),
+        1
+    );
+
+    element.innerHTML = daftar.map(item => {
+
+        const persen =
+            (item.jumlah/maksimal)*100;
+
+        return `
+            <div class="chart-item">
+
+                <div class="chart-info">
+                    <span>${aman(item.nama)}</span>
+                    <strong>${item.jumlah} Orang</strong>
+                </div>
+
+                <div class="bar-bg">
+                    <div class="bar"
+                         style="width:${persen}%">
+                    </div>
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================================
+   KEAMANAN TAMPILAN
+========================================= */
+
+function aman(teks) {
+
+    return String(teks).replace(/[&<>"']/g, function(char) {
+
+        return {
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+        }[char];
+
+    });
+
+}
+
+
+/* =========================================
+   MENAMPILKAN SELURUH STATISTIK
+========================================= */
+
+function tampilkanStatistik(dokumen) {
+
+    dataKaryawan = dokumen.map(dataNormal);
+
+    const data = dataKaryawan;
+
+    /* TOTAL */
+
+    document.getElementById("total").textContent =
+        data.length;
+
+
+    /* RINGKASAN DINAMIS */
+
+    tampilkanRingkasan(
+        "ringkasanDivisi",
+        kelompok(data,"divisi"),
+        "divisi"
+    );
+
+    tampilkanRingkasan(
+        "ringkasanDepartemen",
+        kelompok(data,"departemen"),
+        "departemen"
+    );
+
+    tampilkanRingkasan(
+        "ringkasanStatus",
+        kelompok(data,"status"),
+        "status"
+    );
+
+    tampilkanRingkasan(
+        "ringkasanShift",
+        kelompok(data,"shift"),
+        "shift"
+    );
+
+    tampilkanRingkasan(
+        "ringkasanGrup",
+        kelompok(data,"grup"),
+        "grup"
+    );
+
+    tampilkanRingkasan(
+        "ringkasanCuti",
+        kelompok(data,"sistemCuti"),
+        "sistemCuti"
+    );
+
+
+    /* GRAFIK */
+
+    buatGrafik(
+        "grafikDivisi",
+        kelompok(data,"divisi")
+    );
+
+    buatGrafik(
+        "grafikDepartemen",
+        kelompok(data,"departemen")
+    );
+
+    buatGrafik(
+        "grafikJabatan",
+        kelompok(data,"jabatan")
+    );
+
+    buatGrafik(
+        "grafikCuti",
+        kelompok(data,"sistemCuti")
+    );
+
+    buatGrafik(
+        "grafikShift",
+        kelompok(data,"shift")
+    );
+
+    buatGrafik(
+        "grafikGrade",
+        kelompok(data,"grade")
+    );
+
+    buatGrafik(
+        "grafikGrup",
+        kelompok(data,"grup")
+    );
+
+}
+
+
+/* =========================================
+   MEMUAT DATA MANUAL DARI FIRESTORE
+========================================= */
+
+window.muatStatistik = async function() {
+
+    if (sedangMemuat) return;
+
+    sedangMemuat = true;
+
+    const tombol = document.getElementById("refreshBtn");
+
+    tombol.disabled = true;
+    tombol.textContent = "MEMUAT DATA...";
+
+    pesan("Sedang mengambil data dari Firestore...");
+
+    try {
+
+        if (!auth.currentUser) {
+            throw new Error(
+                "Anda belum login menggunakan Firebase Authentication."
+            );
+        }
+
+        const snapshot = await getDocs(koleksiKaryawan);
+
+        const dokumen = snapshot.docs;
+
+        tampilkanStatistik(dokumen);
+
+        pesan(
+            "Berhasil! " + dokumen.length +
+            " dokumen karyawan berhasil dibaca dari Firestore.",
+            "info-success"
+        );
+
+    } catch(error) {
+
+        console.error("Kesalahan Firestore:",error);
+
+        pesan(
+            "GAGAL MEMUAT DATA: " + error.message +
+            ". Periksa login dan Firestore Security Rules.",
+            "info-error"
+        );
+
+    } finally {
+
+        sedangMemuat = false;
+
+        tombol.disabled = false;
+        tombol.textContent = "↻ MUAT ULANG STATISTIK";
+
+    }
+
+};
+
+
+/* =========================================
+   KONEKSI REALTIME FIRESTORE
+========================================= */
+
+function mulaiRealtime() {
+
+    if (berhentiMendengar) {
+        berhentiMendengar();
+        berhentiMendengar = null;
+    }
+
+    pesan("Menghubungkan ke collection karyawan...");
+
+    berhentiMendengar = onSnapshot(
+
+        koleksiKaryawan,
+
+        function(snapshot) {
+
+            tampilkanStatistik(snapshot.docs);
+
+            pesan(
+                "Terhubung ke Firebase. " +
+                snapshot.size +
+                " karyawan terbaca. Data diperbarui otomatis.",
+                "info-success"
+            );
+
+        },
+
+        function(error) {
+
+            console.error(
+                "Kesalahan realtime Firestore:",
+                error
+            );
+
+            pesan(
+                "GAGAL MENGAKSES COLLECTION KARYAWAN: " +
+                error.message +
+                ". Pastikan akun memiliki izin membaca seluruh dokumen.",
+                "info-error"
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================
+   CEK STATUS LOGIN FIREBASE
+========================================= */
+
+onAuthStateChanged(auth, function(user) {
+
+    if (user) {
+
+        console.log(
+            "Login Firebase:",
+            user.uid
+        );
+
+        mulaiRealtime();
+
+    } else {
+
+        if (berhentiMendengar) {
+            berhentiMendengar();
+            berhentiMendengar = null;
+        }
+
+        dataKaryawan = [];
+
+        document.getElementById("total").textContent = "0";
+
+        pesan(
+            "Anda belum login. Silakan login melalui halaman SITER terlebih dahulu.",
+            "info-error"
+        );
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

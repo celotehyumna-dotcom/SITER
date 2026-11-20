@@ -1,0 +1,1045 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+
+<title>Daftar Akun Karyawan SITER</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #eef3f8;
+    color: #203247;
+    min-height: 100vh;
+}
+
+.header {
+    background: #102b46;
+    color: white;
+    padding: 15px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px solid #e5a52e;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    font-size: 25px;
+}
+
+.tanggal {
+    font-size: 13px;
+}
+
+.btn-kembali {
+    background: #e5a52e;
+    color: #102b46;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+.form-card {
+    background: white;
+    padding: 25px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-top: 4px solid #e5a52e;
+}
+
+.form-title {
+    text-align: center;
+    color: #102b46;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 7px;
+    color: #263e55;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5df;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+}
+
+input:focus {
+    border-color: #1b527e;
+    box-shadow: 0 0 0 2px rgba(27,82,126,0.1);
+}
+
+.password-box {
+    position: relative;
+}
+
+.password-box input {
+    padding-right: 45px;
+}
+
+.mata {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 19px;
+    border: none;
+    background: none;
+}
+
+.btn-daftar {
+    width: 100%;
+    background: #123b5d;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 7px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.btn-daftar:hover {
+    background: #1c527d;
+}
+
+.btn-daftar:disabled {
+    background: #8798a8;
+    cursor: not-allowed;
+}
+
+.keterangan {
+    font-size: 11px;
+    color: #718096;
+    margin-top: 12px;
+    line-height: 1.6;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 13px;
+}
+
+.login-link a {
+    color: #14578a;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* JEJAK STATUS */
+
+.flash-card {
+    background: white;
+    margin-top: 18px;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #1b527e;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.section-heading {
+    color: #102b46;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 11px;
+}
+
+.flash-window {
+    overflow: hidden;
+    background: #edf3f8;
+    border-radius: 6px;
+    padding: 11px;
+}
+
+.flash-text {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #29445e;
+    overflow-wrap: anywhere;
+}
+
+.flash-text.berjalan {
+    white-space: nowrap;
+    animation: berita 25s linear infinite;
+}
+
+.flash-window:hover .berjalan {
+    animation-play-state: paused;
+}
+
+@keyframes berita {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* LAST PENDAFTARAN */
+
+.last-card {
+    background: white;
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    border: 2px solid #d6a33e;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.last-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #102b46;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.live {
+    background: #e4f5eb;
+    color: #18834b;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+}
+
+.last-list {
+    list-style: none;
+}
+
+.last-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #edf0f3;
+    font-size: 13px;
+    color: #34495e;
+}
+
+.last-list li:last-child {
+    border-bottom: none;
+}
+
+.nama-pendaftar {
+    font-weight: bold;
+}
+
+.status-pendaftar {
+    font-size: 11px;
+    color: #718096;
+    margin-top: 4px;
+}
+
+.kosong {
+    color: #8996a3;
+    font-size: 12px;
+    padding: 8px 0;
+}
+
+.footer {
+    text-align: center;
+    color: #7b8b9b;
+    font-size: 11px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+@media(max-width:480px) {
+    .container {
+        margin-top: 18px;
+    }
+
+    .form-card {
+        padding: 22px 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <span class="logo">📅</span>
+        <div class="tanggal" id="tanggal"></div>
+    </div>
+
+    <button class="btn-kembali"
+        onclick="window.location.href='index.html'">
+        ← Kembali
+    </button>
+</header>
+
+<main class="container">
+
+    <section class="form-card">
+
+        <h3 class="form-title">
+            FORMULIR PENDAFTARAN AKUN
+        </h3>
+
+        <form id="formDaftar">
+
+            <div class="form-group">
+                <label for="nik">NIK KARYAWAN</label>
+
+                <input
+                    type="text"
+                    id="nik"
+                    placeholder="Masukkan NIK karyawan"
+                    autocomplete="off"
+                    maxlength="40"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="nama">NAMA LENGKAP</label>
+
+                <input
+                    type="text"
+                    id="nama"
+                    placeholder="Masukkan nama sesuai identitas"
+                    autocomplete="name"
+                    maxlength="120"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">BUAT PASSWORD</label>
+
+                <div class="password-box">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Minimal 6 karakter"
+                        minlength="6"
+                        autocomplete="new-password"
+                        required>
+
+                    <button
+                        type="button"
+                        class="mata"
+                        onclick="lihatPassword('password',this)">
+                        👁
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="konfirmasi">
+                    KONFIRMASI PASSWORD
+                </label>
+
+                <div class="password-box">
+                    <input
+                        type="password"
+                        id="konfirmasi"
+                        placeholder="Ulangi password"
+                        autocomplete="new-password"
+                        required>
+
+                    <button
+                        type="button"
+                        class="mata"
+                        onclick="lihatPassword('konfirmasi',this)">
+                        👁
+                    </button>
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-daftar"
+                id="btnDaftar">
+                DAFTARKAN AKUN
+            </button>
+
+            <p class="keterangan">
+                Pendaftaran akun akan diteruskan kepada
+                Super Admin atau Admin Departemen untuk
+                pemeriksaan dan persetujuan.
+
+                <br><br>
+
+                Akun tidak dapat digunakan sebelum
+                mendapatkan persetujuan.
+            </p>
+
+        </form>
+
+        <div class="login-link">
+            Sudah memiliki akun?
+            <a href="index.html">Masuk Sekarang</a>
+        </div>
+
+    </section>
+
+    <!-- JEJAK STATUS -->
+
+    <section class="flash-card">
+
+        <div class="section-heading">
+            JEJAK STATUS PENDAFTARAN
+        </div>
+
+        <div class="flash-window">
+            <div class="flash-text" id="beritaFlash">
+                Menghubungkan ke Firebase...
+            </div>
+        </div>
+
+    </section>
+
+    <!-- LAST PENDAFTARAN -->
+
+    <section class="last-card">
+
+        <div class="last-heading">
+            <span>LAST PENDAFTARAN</span>
+            <span class="live">● LIVE</span>
+        </div>
+
+        <ul class="last-list" id="daftarTerbaru">
+            <li class="kosong">
+                Memuat data pendaftar...
+            </li>
+        </ul>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    Created by : SITER
+</footer>
+
+
+<script type="module">
+
+import { db } from "./firebase-config.js";
+
+import {
+    collection,
+    doc,
+    getDoc,
+    query,
+    where,
+    orderBy,
+    limit,
+    onSnapshot,
+    writeBatch,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* =========================================
+   FIREBASE AUTH
+========================================= */
+
+const auth = getAuth();
+
+
+/* =========================================
+   TANGGAL
+========================================= */
+
+document.getElementById("tanggal").textContent =
+    new Date().toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+
+
+/* =========================================
+   TAMPILKAN PASSWORD
+========================================= */
+
+window.lihatPassword = function(id, tombol) {
+
+    const input = document.getElementById(id);
+
+    if (input.type === "password") {
+        input.type = "text";
+        tombol.textContent = "🙈";
+    } else {
+        input.type = "password";
+        tombol.textContent = "👁";
+    }
+
+};
+
+
+/* =========================================
+   FORM PENDAFTARAN
+========================================= */
+
+const form = document.getElementById("formDaftar");
+const tombol = document.getElementById("btnDaftar");
+
+
+form.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const nik = document.getElementById("nik")
+        .value.trim();
+
+    const nama = document.getElementById("nama")
+        .value.trim()
+        .replace(/\s+/g, " ");
+
+    const password = document.getElementById("password")
+        .value;
+
+    const konfirmasi = document.getElementById("konfirmasi")
+        .value;
+
+
+    /* =====================================
+       VALIDASI
+    ===================================== */
+
+    if (!nik || !nama) {
+        alert("NIK dan nama wajib diisi.");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Password minimal 6 karakter.");
+        return;
+    }
+
+    if (password !== konfirmasi) {
+        alert("Konfirmasi password tidak sama.");
+        return;
+    }
+
+    if (!/^[a-zA-Z0-9._-]+$/.test(nik)) {
+        alert("Format NIK tidak valid.");
+        return;
+    }
+
+
+    tombol.disabled = true;
+    tombol.textContent = "MEMPROSES...";
+
+
+    try {
+
+        /* =================================
+           ID NIK
+        ================================= */
+
+        const nikNormal = nik.toLowerCase();
+
+
+        /* =================================
+           CEK PENDAFTARAN SEBELUMNYA
+        ================================= */
+
+        const pendaftaranRef =
+            doc(db, "pendaftaran_akun", nikNormal);
+
+        const pemeriksaan =
+            await getDoc(pendaftaranRef);
+
+
+        if (pemeriksaan.exists()) {
+
+            const dataLama = pemeriksaan.data();
+
+            const statusLama =
+                String(dataLama.status || "")
+                .toLowerCase();
+
+            if (
+                statusLama === "aktif" ||
+                statusLama === "disetujui"
+            ) {
+
+                throw new Error(
+                    "NIK ini sudah terdaftar dan telah disetujui."
+                );
+
+            }
+
+            if (
+                statusLama === "menunggu verifikasi" ||
+                statusLama === "menunggu_verifikasi" ||
+                statusLama === "pending"
+            ) {
+
+                throw new Error(
+                    "NIK ini sudah pernah didaftarkan dan sedang menunggu verifikasi."
+                );
+
+            }
+
+            if (statusLama === "ditolak") {
+
+                throw new Error(
+                    "Pendaftaran dengan NIK ini pernah ditolak. Silakan hubungi administrator."
+                );
+
+            }
+
+            throw new Error(
+                "Data pendaftaran dengan NIK ini sudah tersedia."
+            );
+
+        }
+
+
+        /* =================================
+           EMAIL INTERNAL FIREBASE AUTH
+
+           LOGIN PENGGUNA TETAP MENGGUNAKAN NIK.
+
+           LOGIN PAGE HARUS MENGGUNAKAN PEMETAAN
+           EMAIL YANG SAMA.
+        ================================= */
+
+        const email =
+            nikNormal + "@siter-account.com";
+
+
+        /* =================================
+           BUAT AKUN FIREBASE AUTH
+        ================================= */
+
+        const credential =
+            await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+        const user = credential.user;
+
+
+        /* =================================
+           PROFIL FIREBASE AUTH
+        ================================= */
+
+        await updateProfile(user, {
+            displayName: nama
+        });
+
+
+        /* =================================
+           REFERENSI FIRESTORE
+        ================================= */
+
+        const userRef =
+            doc(db, "users", user.uid);
+
+        const beritaRef =
+            doc(collection(db, "temporary"));
+
+
+        /* =================================
+           BATCH PENYIMPANAN
+        ================================= */
+
+        const batch = writeBatch(db);
+
+
+        /* =================================
+           PENDAFTARAN AKUN
+
+           ID DOKUMEN = NIK
+        ================================= */
+
+        batch.set(pendaftaranRef, {
+
+            nik: nikNormal,
+            nama: nama,
+            uid: user.uid,
+
+            status: "menunggu_verifikasi",
+
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+
+            beritaId: beritaRef.id
+
+        });
+
+
+        /* =================================
+           PROFIL USERS
+        ================================= */
+
+        batch.set(userRef, {
+
+            uid: user.uid,
+            nik: nikNormal,
+            nama: nama,
+
+            role: "karyawan",
+            status: "menunggu_verifikasi",
+
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+
+        });
+
+
+        /* =================================
+           BERITA PUBLIK TEMPORARY
+
+           TIDAK MENYIMPAN NIK
+           TIDAK MENYIMPAN PASSWORD
+           TIDAK MENYIMPAN UID
+        ================================= */
+
+        batch.set(beritaRef, {
+
+            jenis: "BERITA_PENDAFTARAN",
+
+            nama: nama,
+
+            status: "menunggu_verifikasi",
+
+            pesan:
+                nama +
+                " telah mendaftarkan akun SITER dan sedang menunggu verifikasi.",
+
+            createdAt: serverTimestamp()
+
+        });
+
+
+        /* =================================
+           SIMPAN SEMUA DATA
+        ================================= */
+
+        await batch.commit();
+
+
+        /* =================================
+           BERHASIL
+        ================================= */
+
+        alert(
+            "PENDAFTARAN BERHASIL!\n\n" +
+            "Nama: " + nama +
+            "\nStatus: MENUNGGU VERIFIKASI\n\n" +
+            "Silakan menunggu persetujuan " +
+            "Super Admin atau Admin Departemen."
+        );
+
+
+        form.reset();
+
+
+    } catch(error) {
+
+        console.error(
+            "Pendaftaran akun:",
+            error
+        );
+
+
+        const kode = error.code || "";
+
+
+        /* =================================
+           PENANGANAN ERROR
+        ================================= */
+
+        if (error.message &&
+            !kode &&
+            (
+                error.message.includes("NIK ini") ||
+                error.message.includes("Data pendaftaran")
+            )
+        ) {
+
+            alert(error.message);
+
+        } else if (
+            kode === "auth/email-already-in-use"
+        ) {
+
+            alert(
+                "NIK ini sudah memiliki akun Firebase " +
+                "atau sudah pernah didaftarkan."
+            );
+
+        } else if (
+            kode === "auth/weak-password"
+        ) {
+
+            alert(
+                "Password terlalu lemah. " +
+                "Gunakan minimal 6 karakter."
+            );
+
+        } else if (
+            kode === "auth/invalid-email"
+        ) {
+
+            alert(
+                "Format akun internal tidak valid."
+            );
+
+        } else if (
+            kode === "permission-denied" ||
+            kode === "firestore/permission-denied"
+        ) {
+
+            alert(
+                "Firebase Rules menolak penyimpanan.\n\n" +
+                "Periksa Firestore Security Rules " +
+                "pada collection pendaftaran_akun, users, dan temporary."
+            );
+
+        } else if (
+            kode === "auth/network-request-failed"
+        ) {
+
+            alert(
+                "Internet terputus. " +
+                "Periksa koneksi internet Anda."
+            );
+
+        } else if (
+            kode === "auth/operation-not-allowed"
+        ) {
+
+            alert(
+                "Metode Email/Password belum diaktifkan " +
+                "di Firebase Authentication."
+            );
+
+        } else if (
+            kode === "auth/too-many-requests"
+        ) {
+
+            alert(
+                "Terlalu banyak percobaan. " +
+                "Silakan coba lagi nanti."
+            );
+
+        } else {
+
+            alert(
+                "Pendaftaran gagal.\n\n" +
+                "Kode: " + kode +
+                "\nPesan: " +
+                (error.message || "Tidak diketahui")
+            );
+
+        }
+
+    } finally {
+
+        tombol.disabled = false;
+        tombol.textContent = "DAFTARKAN AKUN";
+
+    }
+
+});
+
+
+/* =========================================
+   BERITA PENDAFTARAN TEMPORARY
+
+   HANYA MEMBACA DOKUMEN DENGAN JENIS
+   BERITA_PENDAFTARAN.
+========================================= */
+
+const temporaryRef = collection(db, "temporary");
+
+const beritaQuery = query(
+    temporaryRef,
+    where("jenis", "==", "BERITA_PENDAFTARAN"),
+    orderBy("createdAt", "desc"),
+    limit(10)
+);
+
+
+onSnapshot(
+    beritaQuery,
+
+    function(snapshot) {
+
+        const daftar =
+            document.getElementById("daftarTerbaru");
+
+        const flash =
+            document.getElementById("beritaFlash");
+
+        daftar.replaceChildren();
+
+
+        /* =================================
+           DATA KOSONG
+        ================================= */
+
+        if (snapshot.empty) {
+
+            const li =
+                document.createElement("li");
+
+            li.className = "kosong";
+
+            li.textContent =
+                "Belum ada pendaftaran.";
+
+            daftar.appendChild(li);
+
+            flash.textContent =
+                "Belum ada aktivitas pendaftaran.";
+
+            flash.classList.remove("berjalan");
+
+            return;
+
+        }
+
+
+        /* =================================
+           JEJAK FLASH
+        ================================= */
+
+        const berita = [];
+
+        snapshot.forEach(function(dokumen) {
+
+            const data = dokumen.data();
+
+            berita.push(
+                (data.nama || "Karyawan") +
+                " — " +
+                (data.status || "Menunggu Verifikasi")
+            );
+
+        });
+
+
+        flash.textContent =
+            berita.join("   •   ");
+
+        flash.classList.add("berjalan");
+
+
+        /* =================================
+           LAST 5 PENDAFTAR
+        ================================= */
+
+        snapshot.docs.slice(0, 5).forEach(
+            function(dokumen, index) {
+
+                const data =
+                    dokumen.data();
+
+                const li =
+                    document.createElement("li");
+
+                const nama =
+                    document.createElement("div");
+
+                nama.className =
+                    "nama-pendaftar";
+
+                nama.textContent =
+                    (index + 1) +
+                    ". " +
+                    (data.nama || "-");
+
+
+                const status =
+                    document.createElement("div");
+
+                status.className =
+                    "status-pendaftar";
+
+                status.textContent =
+                    data.status ||
+                    "Menunggu Verifikasi";
+
+
+                li.appendChild(nama);
+
+                li.appendChild(status);
+
+                daftar.appendChild(li);
+
+            }
+        );
+
+
+    },
+
+    function(error) {
+
+        console.error(
+            "Gagal memuat berita:",
+            error
+        );
+
+        document.getElementById("beritaFlash")
+            .textContent =
+            "Berita belum dapat dimuat.";
+
+        document.getElementById("daftarTerbaru")
+            .textContent =
+            "Gagal menghubungkan ke Firebase.";
+
+    }
+
+);
+
+</script>
+
+</body>
+</html>

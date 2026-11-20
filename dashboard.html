@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102e4f">
+
+<title>Dashboard Administrasi Pelabuhan</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eef2f6;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(120deg, #102e4f, #17466d);
+    color: white;
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    box-shadow: 0 3px 10px #0002;
+}
+
+.tanggal-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-kalender {
+    width: 39px;
+    height: 39px;
+    background: #ffffff18;
+    border: 1px solid #ffffff45;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fbbf24;
+}
+
+.icon-kalender svg {
+    width: 23px;
+    height: 23px;
+}
+
+.tanggal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.tanggal-label {
+    font-size: 9px;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tanggal {
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-kembali {
+    background: #f0a923;
+    color: #102e4f;
+    border: none;
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-kembali:active {
+    transform: scale(.95);
+}
+
+/* MAIN */
+.container {
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 8px 15px 20px;
+    flex: 1;
+}
+
+/* JUDUL BAGIAN */
+.judul-section {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: white;
+    border-left: 4px solid #e9a323;
+    border-radius: 7px;
+    padding: 13px 12px;
+    margin-top: 17px;
+    margin-bottom: 12px;
+    color: #12395c;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .3px;
+    box-shadow: 0 2px 7px #0000000d;
+}
+
+.judul-section svg {
+    width: 19px;
+    height: 19px;
+    color: #17466d;
+    flex-shrink: 0;
+}
+
+/* GRID MENU */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+/* KARTU MENU */
+.menu-item {
+    min-height: 105px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 5px;
+    text-decoration: none;
+    color: #173b5d;
+    box-shadow: 0 3px 8px #00000008;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.menu-item:active {
+    transform: scale(.96);
+    background: #eaf3fa;
+}
+
+.menu-icon {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf2f9;
+    color: #17466d;
+    border-radius: 11px;
+}
+
+.menu-icon svg {
+    width: 25px;
+    height: 25px;
+    stroke-width: 1.8;
+}
+
+.menu-text {
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* FOOTER */
+.footer {
+    background: #102e4f;
+    color: #dbeafe;
+    text-align: center;
+    padding: 17px 10px;
+    font-size: 10px;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+
+.status-koneksi {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 9px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 7px #22c55e;
+}
+
+.created {
+    color: #fbbf24;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.footer-desc {
+    color: #cbd5e1;
+}
+
+/* POPUP UNDER CONSTRUCTION */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.popup-box {
+    width: 100%;
+    max-width: 300px;
+    background: white;
+    border-radius: 14px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px #0003;
+    animation: muncul .2s ease;
+}
+
+.popup-icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.popup-box h3 {
+    color: #12395c;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.popup-box p {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.popup-btn {
+    background: #17466d;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@keyframes muncul {
+    from {
+        opacity: 0;
+        transform: scale(.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 360px) {
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tanggal {
+        font-size: 10px;
+    }
+
+    .judul-section {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 600px) {
+    .menu-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+    <div class="tanggal-wrapper">
+
+        <div class="icon-kalender">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="16" rx="2"/>
+                <path d="M16 3v4M8 3v4M3 10h18"/>
+                <path d="M8 14h2M14 14h2M8 17h2M14 17h2"/>
+            </svg>
+        </div>
+
+        <div class="tanggal-info">
+            <span class="tanggal-label">Tanggal Hari Ini</span>
+            <span class="tanggal" id="tanggal">Memuat tanggal...</span>
+        </div>
+
+    </div>
+
+    <button class="btn-kembali" onclick="history.back()">
+        &#8592; Kembali
+    </button>
+
+</header>
+
+
+<main class="container">
+
+    <!-- DATA PERSONAL KARYAWAN -->
+    <div class="judul-section">
+        <svg viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+        </svg>
+        DATA PERSONAL KARYAWAN
+    </div>
+
+    <div class="menu-grid">
+
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
+                </svg>
+            </div>
+            <span class="menu-text">Data Karyawan</span>
+        </a>
+
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="4" y="3" width="16" height="18" rx="2"/>
+                    <path d="M8 8h8M8 12h8M8 16h5"/>
+                </svg>
+            </div>
+            <span class="menu-text">Profil Karyawan</span>
+        </a>
+
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v5l3 2"/>
+                </svg>
+            </div>
+            <span class="menu-text">Absensi</span>
+        </a>
+
+    </div>
+
+
+    <!-- DATA TEAM LEADER DIVISI -->
+    <div class="judul-section">
+        <svg viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="7" r="4"/>
+            <path d="M5 21v-2a7 7 0 0 0-14 0v2"/>
+            <path d="M19 8l2 2-2 2"/>
+        </svg>
+        DATA TEAM LEADER DIVISI
+    </div>
+
+    <div class="menu-grid">
+
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="7" r="4"/>
+                    <path d="M5 21v-2a7 7 0 0 0 14 0v2"/>
+                    <path d="M17 4l2-2 2 2"/>
+                </svg>
+            </div>
+            <span class="menu-text">Data Team Leader</span>
+        </a>
+
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="3" y="5" width="18" height="16" rx="2"/>
+                    <path d="M16 3v4M8 3v4M3 10h18M8 14h2M14 14h2"/>
+                </svg>
+            </div>
+            <span class="menu-text">Jadwal Team</span>
+        </a>
+
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+                </svg>
+            </div>
+            <span class="menu-text">Laporan Team</span>
+        </a>
+
+    </div>
+
+
+    <!-- DATA ADMINISTRASI DIVISI -->
+    <div class="judul-section">
+        <svg viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7h7l2 2h9v11H3z"/>
+            <path d="M3 7V5a2 2 0 0 1 2-2h5l2 2"/>
+        </svg>
+        DATA ADMINISTRASI DIVISI
+    </div>
+
+    <div class="menu-grid">
+
+        <!-- KELOLA AKUN KARYAWAN -->
+        <a href="verifikasi_akun.html" class="menu-item">
+
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="10" cy="8" r="4"/>
+                    <path d="M3 21v-2a7 7 0 0 1 14 0v2"/>
+
+                    <circle cx="18" cy="17" r="3"/>
+                    <path d="M18 15.5v3M16.5 17h3"/>
+
+                </svg>
+            </div>
+
+            <span class="menu-text">Kelola Akun Karyawan</span>
+
+        </a>
+
+
+        <!-- KELOLA DATA KARYAWAN -->
+        <a href="data_karyawan.html" class="menu-item">
+
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="10" cy="8" r="4"/>
+                    <path d="M3 21v-2a7 7 0 0 1 12-4.9"/>
+
+                    <circle cx="18" cy="17" r="3"/>
+                    <path d="M18 15.5v3M16.5 17h3"/>
+
+                </svg>
+            </div>
+
+            <span class="menu-text">Kelola Data Karyawan</span>
+
+        </a>
+
+
+        <!-- DATA ADMINISTRASI -->
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="4" y="3" width="16" height="18" rx="2"/>
+                    <path d="M8 8h8M8 12h8M8 16h5"/>
+                </svg>
+            </div>
+
+            <span class="menu-text">Data Administrasi</span>
+
+        </a>
+
+
+        <!-- SURAT MENYURAT -->
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="3" y="5" width="18" height="14" rx="2"/>
+                    <path d="m3 7 9 6 9-6"/>
+                </svg>
+            </div>
+
+            <span class="menu-text">Surat Menyurat</span>
+
+        </a>
+
+
+        <!-- ARSIP DOKUMEN -->
+        <a href="#" class="menu-item" onclick="underConstruction(event)">
+
+            <div class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M3 4h18v4H3z"/>
+                    <path d="M5 8v12h14V8M9 12h6"/>
+                </svg>
+            </div>
+
+            <span class="menu-text">Arsip Dokumen</span>
+
+        </a>
+
+    </div>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+    <div class="status-koneksi">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusSinyal">Memeriksa koneksi...</span>
+    </div>
+
+    <div class="created">
+        Created By : Heti Administration Officer
+    </div>
+
+    <div class="footer-desc">
+        For Operasional Pelabuhan Terminal Khusus
+    </div>
+
+</footer>
+
+
+<!-- POPUP UNDER CONSTRUCTION -->
+<div class="popup-overlay" id="popup">
+
+    <div class="popup-box">
+
+        <div class="popup-icon">🚧</div>
+
+        <h3>Under Construction</h3>
+
+        <p>Fitur ini sedang dalam tahap pengembangan.</p>
+
+        <button class="popup-btn" onclick="tutupPopup()">
+            Mengerti
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+// TANGGAL OTOMATIS INDONESIA
+function tampilkanTanggal() {
+
+    const sekarang = new Date();
+
+    document.getElementById("tanggal").textContent =
+        sekarang.toLocaleDateString("id-ID", {
+            weekday: "long",
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+}
+
+tampilkanTanggal();
+
+
+// STATUS KONEKSI INTERNET
+function cekSinyal() {
+
+    const status = document.getElementById("statusSinyal");
+    const dot = document.getElementById("statusDot");
+
+    if (navigator.onLine) {
+
+        status.textContent = "Online - Terhubung";
+        status.style.color = "#22c55e";
+        dot.style.background = "#22c55e";
+        dot.style.boxShadow = "0 0 7px #22c55e";
+
+    } else {
+
+        status.textContent = "Offline - Tidak Terhubung";
+        status.style.color = "#f87171";
+        dot.style.background = "#ef4444";
+        dot.style.boxShadow = "0 0 7px #ef4444";
+
+    }
+}
+
+window.addEventListener("online", cekSinyal);
+window.addEventListener("offline", cekSinyal);
+
+cekSinyal();
+
+
+// MENAMPILKAN UNDER CONSTRUCTION
+function underConstruction(event) {
+
+    event.preventDefault();
+
+    document.getElementById("popup").style.display = "flex";
+}
+
+
+// MENUTUP POPUP
+function tutupPopup() {
+
+    document.getElementById("popup").style.display = "none";
+}
+
+
+// MENUTUP POPUP KETIKA AREA LUAR DIKLIK
+document.getElementById("popup").addEventListener("click", function(event) {
+
+    if (event.target === this) {
+        tutupPopup();
+    }
+
+});
+
+</script>
+
+</body>
+</html>

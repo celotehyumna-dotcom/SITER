@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+
+<title>Data Karyawan Divisi</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #edf2f7;
+    color: #24364b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    background: #102b46;
+    color: white;
+    padding: 15px 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.calendar-icon {
+    font-size: 25px;
+}
+
+.date-info {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+}
+
+.back-button {
+    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    padding: 9px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.back-button:active {
+    background: #315878;
+}
+
+/* MAIN */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 25px 18px 35px;
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 27px;
+}
+
+.page-title h1 {
+    font-size: 22px;
+    color: #102b46;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+
+.title-line {
+    width: 65px;
+    height: 4px;
+    background: #d6a94d;
+    border-radius: 10px;
+    margin: 12px auto 0;
+}
+
+.subtitle {
+    color: #748397;
+    font-size: 12px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+    font-style: italic;
+}
+
+/* MENU */
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.menu-card {
+    background: white;
+    border-radius: 13px;
+    min-height: 155px;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: #24364b;
+    border: 1px solid #e1e8ef;
+    box-shadow: 0 4px 12px rgba(22,48,75,0.07);
+    transition: 0.2s;
+}
+
+.menu-card:active {
+    transform: scale(0.96);
+    background: #f2f7fc;
+}
+
+.menu-icon {
+    width: 57px;
+    height: 57px;
+    border-radius: 14px;
+    background: #eaf1f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 29px;
+    margin-bottom: 13px;
+}
+
+.menu-card h3 {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #163957;
+    font-weight: 700;
+}
+
+.menu-card p {
+    font-size: 10px;
+    color: #8997a7;
+    margin-top: 5px;
+}
+
+/* FOOTER */
+.footer {
+    background: #102b46;
+    color: white;
+    padding: 17px 12px 19px;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* SIGNAL */
+.signal-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 11px;
+    margin-bottom: 14px;
+    color: #d9e6f2;
+}
+
+.signal-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 15px;
+}
+
+.signal-bars span {
+    width: 4px;
+    background: #38d996;
+    border-radius: 2px;
+}
+
+.signal-bars span:nth-child(1) {
+    height: 5px;
+}
+
+.signal-bars span:nth-child(2) {
+    height: 8px;
+}
+
+.signal-bars span:nth-child(3) {
+    height: 11px;
+}
+
+.signal-bars span:nth-child(4) {
+    height: 15px;
+}
+
+.created-by {
+    font-size: 11px;
+    color: #e4edf5;
+    line-height: 1.7;
+}
+
+.created-by strong {
+    color: #e5bd69;
+}
+
+.footer-note {
+    font-size: 10px;
+    color: #a9bfd2;
+    margin-top: 3px;
+}
+
+/* DESKTOP */
+@media (min-width: 650px) {
+    .menu-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .menu-card {
+        min-height: 180px;
+    }
+
+    .page-title h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+    <div class="header-left">
+        <div class="calendar-icon">📅</div>
+
+        <div class="date-info" id="tanggalHariIni">
+            Memuat tanggal...
+        </div>
+    </div>
+
+    <button class="back-button" onclick="kembali()">
+        ❮ KEMBALI
+    </button>
+
+</header>
+
+
+<!-- KONTEN UTAMA -->
+<main>
+
+    <div class="page-title">
+
+        <h1>DATA KARYAWAN DIVISI</h1>
+
+        <div class="title-line"></div>
+
+        <p class="subtitle">
+            Satu data, satu sistem, satu tujuan
+        </p>
+
+    </div>
+
+
+    <!-- MENU UTAMA -->
+    <div class="menu-container">
+
+        <!-- INPUT DATA -->
+        <a href="input_karyawan.html" class="menu-card">
+
+            <div class="menu-icon">👤</div>
+
+            <h3>INPUT DATA KARYAWAN</h3>
+
+            <p>Tambah dan kelola data karyawan</p>
+
+        </a>
+
+
+        <!-- DAFTAR DAN PENCARIAN -->
+        <a href="daftar_karyawan.html" class="menu-card">
+
+            <div class="menu-icon">📋</div>
+
+            <h3>DAFTAR & PENCARIAN DATA KARYAWAN</h3>
+
+            <p>Lihat dan cari data karyawan</p>
+
+        </a>
+
+
+        <!-- HISTORY -->
+        <a href="history_karyawan.html" class="menu-card">
+
+            <div class="menu-icon">📑</div>
+
+            <h3>AKTIVITAS / JEJAK HISTORY DATA KARYAWAN</h3>
+
+            <p>Riwayat perubahan data karyawan</p>
+
+        </a>
+
+
+        <!-- STATISTIK -->
+        <a href="statistik_karyawan.html" class="menu-card">
+
+            <div class="menu-icon">📊</div>
+
+            <h3>STATISTIK KARYAWAN</h3>
+
+            <p>Informasi dan grafik statistik</p>
+
+        </a>
+
+    </div>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+    <!-- STATUS KONEKSI -->
+    <div class="signal-status">
+
+        <div class="signal-bars">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <span id="statusSinyal">
+            Memeriksa koneksi...
+        </span>
+
+    </div>
+
+    <div class="created-by">
+        Created By : <strong>Heti Administration Officer</strong>
+    </div>
+
+    <div class="footer-note">
+        For Operasional Pelabuhan Terminal Khusus
+    </div>
+
+</footer>
+
+
+<script>
+
+// TANGGAL OTOMATIS
+function tampilkanTanggal() {
+
+    const sekarang = new Date();
+
+    const formatTanggal = new Intl.DateTimeFormat('id-ID', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    document.getElementById('tanggalHariIni').textContent =
+        formatTanggal.format(sekarang);
+
+}
+
+tampilkanTanggal();
+
+
+// TOMBOL KEMBALI
+function kembali() {
+
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = 'dashboard.html';
+    }
+
+}
+
+
+// STATUS KONEKSI INTERNET
+function cekSinyal() {
+
+    const status = document.getElementById('statusSinyal');
+
+    if (navigator.onLine) {
+        status.textContent = 'Koneksi Internet Aktif';
+    } else {
+        status.textContent = 'Tidak Ada Koneksi Internet';
+    }
+
+}
+
+cekSinyal();
+
+window.addEventListener('online', cekSinyal);
+window.addEventListener('offline', cekSinyal);
+
+</script>
+
+</body>
+</html>

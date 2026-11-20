@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+
+<title>Input Data Karyawan SITER</title>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    color: #1e293b;
+    padding-bottom: 30px;
+}
+
+.header {
+    background: #102b46;
+    color: white;
+    padding: 13px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #e0a52b;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.calendar { font-size: 24px; }
+
+.date {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.back-btn {
+    background: #e0a52b;
+    color: #102b46;
+    border: none;
+    padding: 9px 13px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.heading {
+    background: white;
+    text-align: center;
+    padding: 21px 10px;
+    border-bottom: 1px solid #dce3ec;
+}
+
+.heading h2 {
+    font-size: 19px;
+    color: #102b46;
+    letter-spacing: 1px;
+}
+
+.heading p {
+    margin-top: 7px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #64748b;
+}
+
+.container {
+    max-width: 700px;
+    margin: 18px auto;
+    padding: 0 13px;
+}
+
+.menu-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+}
+
+.menu-btn {
+    min-height: 75px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #102b46;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.menu-icon { font-size: 23px; }
+
+.import-btn { border-bottom: 3px solid #219653; }
+.export-btn { border-bottom: 3px solid #2475b9; }
+.search-btn { border-bottom: 3px solid #e0a52b; }
+.stat-btn { border-bottom: 3px solid #7952a5; }
+
+.menu-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.add-area { margin-top: 15px; }
+
+.add-btn {
+    width: 100%;
+    min-height: 52px;
+    background: #102b46;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.add-btn span { font-size: 21px; }
+
+.add-btn:disabled { opacity: 0.5; }
+
+.form-card {
+    background: white;
+    padding: 19px;
+    border-radius: 10px;
+    margin-top: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.section-title {
+    font-size: 14px;
+    color: #102b46;
+    font-weight: bold;
+    padding-bottom: 13px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #e0a52b;
+}
+
+.mode-info {
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 1.6;
+    background: #dbeafe;
+    color: #1e40af;
+    display: none;
+}
+
+.mode-info.edit {
+    display: block;
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.mode-info.add {
+    display: block;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.form-group { margin-bottom: 15px; }
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 7px;
+    color: #334155;
+    text-transform: uppercase;
+}
+
+input, select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: white;
+    color: #1e293b;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #1d5d91;
+    box-shadow: 0 0 0 2px rgba(29,93,145,0.12);
+}
+
+input::placeholder { color: #94a3b8; }
+
+input[readonly] {
+    background: #e2e8f0;
+    color: #475569;
+    font-weight: bold;
+}
+
+.hint {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 23px;
+}
+
+.save-btn, .reset-btn {
+    flex: 1;
+    height: 46px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.save-btn {
+    background: #102b46;
+    color: white;
+}
+
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.reset-btn {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.close-form {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: white;
+    color: #475569;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 10px;
+    margin-top: 23px;
+    letter-spacing: 1px;
+}
+
+#notification {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #102b46;
+    color: white;
+    padding: 13px 18px;
+    border-radius: 7px;
+    font-size: 12px;
+    z-index: 100;
+    width: max-content;
+    max-width: 90%;
+    text-align: center;
+}
+
+[hidden] { display: none !important; }
+
+@media(max-width:480px) {
+    .heading h2 { font-size: 17px; }
+    .form-card { padding: 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-left">
+        <span class="calendar">▦</span>
+        <span class="date" id="tanggal"></span>
+    </div>
+
+    <button class="back-btn" onclick="kembali()">
+        ← KEMBALI
+    </button>
+
+</header>
+
+<div class="heading">
+    <h2>INPUT DATA KARYAWAN</h2>
+    <p>SATU DATA, SATU SISTEM, SATU TUJUAN</p>
+</div>
+
+<div class="container">
+
+    <div class="menu-card" id="menuCard">
+
+        <div class="menu-grid">
+
+            <button class="menu-btn import-btn"
+                    id="btnImport"
+                    onclick="pilihFileExcel()"
+                    disabled>
+                <span class="menu-icon">📥</span>
+                <span>IMPORT EXCEL</span>
+            </button>
+
+            <button class="menu-btn export-btn"
+                    id="btnExport"
+                    onclick="exportExcel()"
+                    disabled>
+                <span class="menu-icon">📤</span>
+                <span>EXPORT EXCEL</span>
+            </button>
+
+            <a href="daftar_karyawan.html"
+               class="menu-btn search-btn">
+                <span class="menu-icon">🔎</span>
+                <span>CARI KARYAWAN</span>
+            </a>
+
+            <a href="statistik_karyawan.html"
+               class="menu-btn stat-btn">
+                <span class="menu-icon">📊</span>
+                <span>STATISTIK KARYAWAN</span>
+            </a>
+
+        </div>
+
+        <input type="file"
+               id="fileExcel"
+               accept=".xlsx,.xls,.csv"
+               hidden>
+
+    </div>
+
+    <div class="add-area" id="addArea">
+
+        <button class="add-btn"
+                id="btnTambah"
+                onclick="bukaForm()"
+                disabled>
+            <span>＋</span>
+            TAMBAH KARYAWAN
+        </button>
+
+    </div>
+
+    <div class="form-card" id="formCard" hidden>
+
+        <div class="section-title">
+            FORMULIR IDENTITAS KARYAWAN
+        </div>
+
+        <div id="modeInfo" class="mode-info"></div>
+
+        <form id="formKaryawan">
+
+            <div class="form-group">
+                <label>Divisi</label>
+
+                <input type="text"
+                       name="divisi"
+                       list="listDivisi"
+                       placeholder="Pilih atau ketik divisi"
+                       autocomplete="off"
+                       required>
+
+                <datalist id="listDivisi"></datalist>
+            </div>
+
+            <div class="form-group">
+                <label>Departemen</label>
+
+                <input type="text"
+                       name="departemen"
+                       list="listDepartemen"
+                       placeholder="Pilih atau ketik departemen"
+                       autocomplete="off"
+                       required>
+
+                <datalist id="listDepartemen"></datalist>
+            </div>
+
+            <div class="form-group">
+                <label>NIK</label>
+
+                <input type="text"
+                       name="nik"
+                       id="nik"
+                       placeholder="Masukkan NIK"
+                       autocomplete="off"
+                       required>
+                <div class="hint" id="nikHint">
+                    NIK menjadi identitas utama karyawan.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+
+                <input type="text"
+                       name="nama"
+                       placeholder="Masukkan nama lengkap"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Jabatan</label>
+
+                <input type="text"
+                       name="jabatan"
+                       placeholder="Masukkan jabatan"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>TMK (Tanggal Masuk Kerja)</label>
+
+                <input type="text"
+                       name="tmk"
+                       id="tmk"
+                       placeholder="dd/mm/yy"
+                       maxlength="8"
+                       inputmode="numeric"
+                       pattern="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{2}"
+                       title="Format tanggal harus dd/mm/yy"
+                       required>
+
+                <div class="hint">
+                    Format DD/MM/YY. Contoh: 05/08/24
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>POH</label>
+
+                <input type="text"
+                       name="poh"
+                       placeholder="Masukkan POH"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Sistem Cuti</label>
+
+                <select name="sistem_cuti" required>
+                    <option value="">-- Pilih Sistem Cuti --</option>
+                    <option>Cuti Tahunan</option>
+                    <option>Cuti Khusus</option>
+                    <option>Cuti Shift</option>
+                    <option>Lainnya</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Shift Kerja</label>
+
+                <select name="shift_kerja" required>
+                    <option value="">-- Pilih Shift --</option>
+                    <option>Non Shift</option>
+                    <option>Shift 1</option>
+                    <option>Shift 2</option>
+                    <option>Shift 3</option>
+                    <option>Shift Fleksibel</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Grade</label>
+
+                <input type="text"
+                       name="grade"
+                       placeholder="Masukkan grade"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Nomor WhatsApp</label>
+
+                <input type="tel"
+                       name="nowa"
+                       placeholder="Contoh: 081234567890"
+                       inputmode="numeric"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+
+                <select name="status" required>
+                    <option value="">-- Pilih Status --</option>
+                    <option>Aktif</option>
+                    <option>Nonaktif</option>
+                    <option>Cuti</option>
+                    <option>Pensiun</option>
+                    <option>Resign</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Hak Akses</label>
+
+                <select name="hak_akses" required>
+                    <option value="">-- Pilih Hak Akses --</option>
+                    <option>Administrator</option>
+                    <option>Admin</option>
+                    <option>HRD</option>
+                    <option>Operator</option>
+                    <option>User</option>
+                    <option>Viewer</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+
+                <button type="submit"
+                        class="save-btn"
+                        id="btnSimpan">
+                    ✓ SIMPAN DATA
+                </button>
+
+                <button type="button"
+                        class="reset-btn"
+                        id="btnResetForm">
+                    ↻ RESET
+                </button>
+
+            </div>
+
+        </form>
+
+        <button class="close-form"
+                onclick="tutupForm()">
+            ✕ TUTUP FORMULIR
+        </button>
+
+    </div>
+
+    <div class="footer">
+        SISTEM INFORMASI ADMINISTRASI KARYAWAN
+    </div>
+
+</div>
+
+<div id="notification"></div>
+
+
+<script type="module">
+
+import { db, auth } from "./firebase-config.js";
+import { catatHistory } from "./history.js";
+
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    setDoc,
+    updateDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+
+// ========================================
+// KONFIGURASI ADMIN
+// ========================================
+
+const OWNER_EMAIL = "celotehyumna@gmail.com";
+
+let adminAktif = false;
+let modeEdit = false;
+let nikEdit = "";
+let dataAsliEdit = null;
+
+
+// ========================================
+// PARAMETER URL
+// ========================================
+
+const parameter = new URLSearchParams(
+    window.location.search
+);
+
+const modeURL = parameter.get("mode");
+const nikURL = parameter.get("nik");
+
+const permintaanEdit =
+    modeURL === "edit" && !!nikURL;
+
+
+// ========================================
+// TANGGAL
+// ========================================
+
+document.getElementById("tanggal").textContent =
+    new Date().toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+    });
+
+
+// ========================================
+// NOTIFIKASI
+// ========================================
+
+function notifikasi(pesan) {
+
+    const el = document.getElementById("notification");
+
+    el.textContent = pesan;
+    el.style.display = "block";
+
+    clearTimeout(window.timerNotifikasi);
+
+    window.timerNotifikasi = setTimeout(() => {
+        el.style.display = "none";
+    }, 3500);
+
+}
+
+
+// ========================================
+// AKSES
+// ========================================
+
+function aturAkses(aktif) {
+
+    document.getElementById("btnTambah").disabled = !aktif;
+    document.getElementById("btnImport").disabled = !aktif;
+    document.getElementById("btnExport").disabled = !aktif;
+
+    if (!aktif) {
+        document.getElementById("formCard").hidden = true;
+    }
+
+}
+
+aturAkses(false);
+
+
+function pastikanAdmin() {
+
+    const user = auth.currentUser;
+
+    if (!user) {
+        throw new Error("Anda belum login.");
+    }
+
+    if (!user.email ||
+        user.email.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
+
+        throw new Error("Akses hanya untuk admin utama.");
+
+    }
+
+}
+
+
+// ========================================
+// REFERENSI DIVISI DAN DEPARTEMEN
+// ========================================
+
+async function muatReferensiKaryawan() {
+
+    pastikanAdmin();
+
+    const snapshot = await getDocs(
+        collection(db, "karyawan")
+    );
+
+    const divisiSet = new Set();
+    const departemenSet = new Set();
+
+    snapshot.forEach(dokumen => {
+
+        const data = dokumen.data();
+
+        if (data.divisi) {
+            const nilai = String(data.divisi).trim();
+            if (nilai) divisiSet.add(nilai);
+        }
+
+        if (data.departemen) {
+            const nilai = String(data.departemen).trim();
+            if (nilai) departemenSet.add(nilai);
+        }
+
+    });
+
+    isiDatalist("listDivisi", divisiSet);
+    isiDatalist("listDepartemen", departemenSet);
+
+    return snapshot.size;
+
+}
+
+
+function isiDatalist(id, daftar) {
+
+    const elemen = document.getElementById(id);
+
+    elemen.replaceChildren();
+
+    [...daftar]
+        .sort((a, b) => a.localeCompare(b, "id"))
+        .forEach(nilai => {
+
+            const option = document.createElement("option");
+            option.value = nilai;
+
+            elemen.appendChild(option);
+
+        });
+
+}
+
+
+// ========================================
+// AUTHENTICATION
+// ========================================
+
+onAuthStateChanged(auth, async user => {
+
+    if (!user) {
+
+        adminAktif = false;
+        aturAkses(false);
+
+        notifikasi("Silakan login terlebih dahulu.");
+
+        setTimeout(() => {
+            window.location.replace("index.html");
+        }, 1500);
+
+        return;
+
+    }
+
+    adminAktif =
+        !!user.email &&
+        user.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+
+    aturAkses(adminAktif);
+
+    if (!adminAktif) {
+
+        notifikasi("Akses hanya untuk admin utama.");
+
+        return;
+
+    }
+
+    try {
+
+        notifikasi("Menghubungkan ke Firestore...");
+
+        await muatReferensiKaryawan();
+
+        if (permintaanEdit) {
+
+            await bukaModeEdit(nikURL);
+
+        } else {
+
+            notifikasi("Terhubung ke Firestore.");
+
+        }
+
+    } catch (error) {
+
+        console.error("Inisialisasi gagal:", error);
+
+        notifikasi(
+            "Gagal menghubungkan: " + error.message
+        );
+
+    }
+
+});
+
+
+// ========================================
+// BUKA FORM TAMBAH
+// ========================================
+
+window.bukaForm = function() {
+
+    try {
+
+        pastikanAdmin();
+
+        modeEdit = false;
+        nikEdit = "";
+        dataAsliEdit = null;
+
+        const form = document.getElementById("formKaryawan");
+
+        form.reset();
+
+        document.getElementById("nik").readOnly = false;
+
+        document.getElementById("nikHint").textContent =
+            "NIK menjadi identitas utama karyawan.";
+
+        document.getElementById("sectionTitle");
+
+        document.querySelector(".section-title").textContent =
+            "FORMULIR IDENTITAS KARYAWAN";
+
+        const info = document.getElementById("modeInfo");
+
+        info.className = "mode-info add";
+        info.textContent = "MODE TAMBAH: Masukkan identitas karyawan baru.";
+
+        document.getElementById("btnSimpan").textContent =
+            "✓ SIMPAN DATA";
+
+        document.getElementById("btnResetForm").disabled = false;
+
+        document.getElementById("formCard").hidden = false;
+
+        document.getElementById("addArea").classList.remove("hidden");
+
+        document.getElementById("menuCard").classList.remove("hidden");
+
+        document.getElementById("formCard").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    } catch (error) {
+
+        notifikasi(error.message);
+
+    }
+
+};
+
+
+// ========================================
+// PASTIKAN OPTION SELECT TERSEDIA
+// ========================================
+
+function isiNilaiForm(form, key, value) {
+
+    const elemen = form.elements.namedItem(key);
+
+    if (!elemen) return;
+
+    const nilai = value === undefined || value === null
+        ? ""
+        : String(value);
+
+    if (elemen.tagName === "SELECT" && nilai !== "") {
+
+        const tersedia = [...elemen.options].some(
+            option => option.value === nilai
+        );
+
+        if (!tersedia) {
+
+            const option = document.createElement("option");
+
+            option.value = nilai;
+            option.textContent = nilai;
+
+            elemen.appendChild(option);
+
+        }
+
+    }
+
+    elemen.value = nilai;
+
+}
+
+
+// ========================================
+// MODE EDIT
+// ========================================
+
+async function bukaModeEdit(nik) {
+
+    pastikanAdmin();
+
+    nik = String(nik || "").trim();
+
+    if (!nik) {
+        throw new Error("NIK tidak ditemukan.");
+    }
+
+    notifikasi("Mengambil data karyawan...");
+
+    const referensi = doc(db, "karyawan", nik);
+
+    const snapshot = await getDoc(referensi);
+
+    if (!snapshot.exists()) {
+
+        throw new Error(
+            "Data karyawan dengan NIK " + nik +
+            " tidak ditemukan di Firestore."
+        );
+
+    }
+
+    const data = snapshot.data();
+
+    modeEdit = true;
+    nikEdit = nik;
+    dataAsliEdit = data;
+
+    const form = document.getElementById("formKaryawan");
+
+    form.reset();
+
+    // Isi seluruh data berdasarkan NIK
+
+    const daftarField = [
+
+        "divisi",
+        "departemen",
+        "nik",
+        "nama",
+        "jabatan",
+        "tmk",
+        "poh",
+        "sistem_cuti",
+        "shift_kerja",
+        "grade",
+        "nowa",
+        "status",
+        "hak_akses"
+
+    ];
+
+    daftarField.forEach(key => {
+
+        const nilai = key === "nik"
+            ? nik
+            : data[key];
+
+        isiNilaiForm(form, key, nilai);
+
+    });
+
+
+    // NIK tidak boleh diubah
+
+    document.getElementById("nik").readOnly = true;
+
+    document.getElementById("nikHint").textContent =
+        "NIK dikunci karena menjadi identitas utama dokumen Firestore.";
+
+
+    // Ubah tampilan menjadi mode edit
+
+    document.querySelector(".section-title").textContent =
+        "EDIT IDENTITAS KARYAWAN";
+
+    const info = document.getElementById("modeInfo");
+
+    info.className = "mode-info edit";
+
+    info.textContent =
+        "MODE EDIT KARYAWAN | NIK: " + nik +
+        " | Periksa data sebelum menyimpan perubahan.";
+
+
+    document.getElementById("btnSimpan").textContent =
+        "✓ SIMPAN PERUBAHAN";
+
+    document.getElementById("btnResetForm").disabled = false;
+
+    // Sembunyikan menu tambah dan import saat edit
+
+    document.getElementById("addArea").classList.add("hidden");
+
+    document.getElementById("menuCard").classList.add("hidden");
+
+    // Form langsung dibuka
+
+    document.getElementById("formCard").hidden = false;
+
+    document.getElementById("formCard").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    notifikasi("Data karyawan berhasil dimuat.");
+
+}
+
+
+// ========================================
+// RESET FORM
+// ========================================
+
+document.getElementById("btnResetForm")
+.addEventListener("click", async () => {
+
+    if (modeEdit) {
+
+        if (!confirm(
+            "Kembalikan formulir ke data awal sebelum diedit?"
+        )) return;
+
+        try {
+
+            await bukaModeEdit(nikEdit);
+
+        } catch (error) {
+
+            notifikasi(error.message);
+
+        }
+
+    } else {
+
+        document.getElementById("formKaryawan").reset();
+
+    }
+
+});
+
+
+// ========================================
+// TUTUP FORM
+// ========================================
+
+window.tutupForm = function() {
+
+    if (modeEdit) {
+
+        if (confirm(
+            "Kembali ke daftar karyawan?"
+        )) {
+
+            window.location.href = "daftar_karyawan.html";
+
+        }
+
+        return;
+
+    }
+
+    document.getElementById("formCard").hidden = true;
+
+    document.getElementById("formKaryawan").reset();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+};
+
+
+// ========================================
+// TOMBOL KEMBALI
+// ========================================
+
+window.kembali = function() {
+
+    if (modeEdit) {
+
+        window.location.href = "daftar_karyawan.html";
+
+        return;
+
+    }
+
+    if (history.length > 1) {
+
+        history.back();
+
+    } else {
+
+        window.location.href = "dashboard.html";
+
+    }
+
+};
+
+
+// ========================================
+// FORMAT TMK
+// ========================================
+
+document.getElementById("tmk")
+.addEventListener("input", function(e) {
+
+    let angka = e.target.value
+        .replace(/\D/g, "")
+        .slice(0, 6);
+
+    if (angka.length > 4) {
+
+        angka =
+            angka.slice(0, 2) + "/" +
+            angka.slice(2, 4) + "/" +
+            angka.slice(4);
+
+    } else if (angka.length > 2) {
+
+        angka =
+            angka.slice(0, 2) + "/" +
+            angka.slice(2);
+
+    }
+
+    e.target.value = angka;
+
+});
+
+
+// ========================================
+// VALIDASI TMK
+// ========================================
+
+function validasiTMK(value) {
+
+    const match = value.match(
+        /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{2})$/
+    );
+
+    if (!match) return false;
+
+    const hari = Number(match[1]);
+    const bulan = Number(match[2]);
+    const tahun = 2000 + Number(match[3]);
+
+    const tanggal = new Date(tahun, bulan - 1, hari);
+
+    return tanggal.getFullYear() === tahun &&
+           tanggal.getMonth() === bulan - 1 &&
+           tanggal.getDate() === hari;
+
+}
+
+
+// ========================================
+// SIMPAN KARYAWAN BARU
+// ========================================
+
+async function simpanKaryawanBaru(data) {
+
+    pastikanAdmin();
+
+    const nik = String(data.nik || "").trim();
+
+    if (!nik) {
+        throw new Error("NIK wajib diisi.");
+    }
+
+    const referensi = doc(db, "karyawan", nik);
+
+    const pemeriksaan = await getDoc(referensi);
+
+    if (pemeriksaan.exists()) {
+
+        throw new Error("NIK sudah terdaftar.");
+
+    }
+
+    await setDoc(referensi, {
+
+        ...data,
+        nik: nik,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+
+    });
+
+}
+
+
+// ========================================
+// UPDATE DATA KARYAWAN
+// ========================================
+
+async function updateKaryawan(data) {
+
+    pastikanAdmin();
+
+    if (!nikEdit) {
+        throw new Error("NIK edit tidak tersedia.");
+    }
+
+    const referensi = doc(db, "karyawan", nikEdit);
+
+    const pemeriksaan = await getDoc(referensi);
+
+    if (!pemeriksaan.exists()) {
+
+        throw new Error("Dokumen karyawan tidak ditemukan.");
+
+    }
+
+    // NIK selalu menggunakan ID dokumen asli
+
+    data.nik = nikEdit;
+
+    // Hanya memperbarui field identitas.
+    // createdAt dan field lain tidak dihapus.
+
+    await updateDoc(referensi, {
+
+        ...data,
+
+        updatedAt: serverTimestamp()
+
+    });
+
+}
+
+
+// ========================================
+// SUBMIT FORM
+// ========================================
+
+document.getElementById("formKaryawan")
+.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const form = this;
+
+    const tombol = document.getElementById("btnSimpan");
+
+    try {
+
+        pastikanAdmin();
+
+        const tmk = document.getElementById("tmk").value;
+
+        if (!validasiTMK(tmk)) {
+
+            throw new Error(
+                "TMK tidak valid. Gunakan format dd/mm/yy."
+            );
+
+        }
+
+        const dataBaru = Object.fromEntries(
+            new FormData(form).entries()
+        );
+
+        dataBaru.nik = String(dataBaru.nik || "").trim();
+        dataBaru.nama = String(dataBaru.nama || "").trim();
+        dataBaru.divisi = String(dataBaru.divisi || "").trim();
+        dataBaru.departemen = String(dataBaru.departemen || "").trim();
+
+        if (!dataBaru.nik || !dataBaru.nama) {
+            throw new Error("NIK dan nama wajib diisi.");
+        }
+
+        if (!dataBaru.divisi || !dataBaru.departemen) {
+            throw new Error("Divisi dan departemen wajib diisi.");
+        }
+
+        if (modeEdit && dataBaru.nik !== nikEdit) {
+            throw new Error("NIK tidak boleh diubah.");
+        }
+
+        tombol.disabled = true;
+
+        tombol.textContent = modeEdit
+            ? "MENYIMPAN PERUBAHAN..."
+            : "MENYIMPAN...";
+
+
+        if (modeEdit) {
+
+            await updateKaryawan(dataBaru);
+
+            try {
+                await catatHistory({
+                    jenis: "EDIT",
+                    nik: nikEdit,
+                    nama: dataBaru.nama || dataAsliEdit?.nama || "-",
+                    keterangan: "Mengubah data karyawan",
+                    halaman: "input_karyawan.html",
+                    detail: {
+                        dataSebelum: dataAsliEdit || {},
+                        dataSesudah: dataBaru
+                    }
+                });
+            } catch (historyError) {
+                console.error("Data berhasil diubah, tetapi history gagal dicatat:", historyError);
+                alert("Data karyawan berhasil diubah, tetapi pencatatan history gagal: " + historyError.message);
+            }
+
+            notifikasi("Perubahan data berhasil disimpan.");
+
+            alert(
+                "BERHASIL!\n\n" +
+                "Data karyawan dengan NIK " +
+                nikEdit +
+                " berhasil diperbarui."
+            );
+
+            // Kembali ke daftar setelah berhasil edit
+
+            window.location.href = "daftar_karyawan.html";
+
+        } else {
+
+            await simpanKaryawanBaru(dataBaru);
+
+            try {
+                await catatHistory({
+                    jenis: "TAMBAH",
+                    nik: dataBaru.nik,
+                    nama: dataBaru.nama,
+                    keterangan: "Menambahkan data karyawan baru",
+                    halaman: "input_karyawan.html",
+                    detail: {
+                        dataBaru: dataBaru
+                    }
+                });
+            } catch (historyError) {
+                console.error("Data berhasil ditambahkan, tetapi history gagal dicatat:", historyError);
+                alert("Data karyawan berhasil disimpan, tetapi pencatatan history gagal: " + historyError.message);
+            }
+
+            form.reset();
+
+            document.getElementById("formCard").hidden = true;
+
+            await muatReferensiKaryawan();
+
+            notifikasi("Data berhasil disimpan ke Firestore.");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+    } catch (error) {
+
+        console.error("Simpan gagal:", error);
+
+        alert(
+            "GAGAL MENYIMPAN DATA\n\n" +
+            error.message
+        );
+
+    } finally {
+
+        tombol.disabled = false;
+
+        tombol.textContent = modeEdit
+            ? "✓ SIMPAN PERUBAHAN"
+            : "✓ SIMPAN DATA";
+
+    }
+
+});
+
+
+// ========================================
+// PILIH FILE EXCEL
+// ========================================
+
+window.pilihFileExcel = function() {
+
+    try {
+
+        pastikanAdmin();
+
+        document.getElementById("fileExcel").click();
+
+    } catch (error) {
+
+        notifikasi(error.message);
+
+    }
+
+};
+
+
+// ========================================
+// NORMALISASI KOLOM EXCEL
+// ========================================
+
+function normalisasi(teks) {
+
+    return String(teks || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+
+}
+
+
+// ========================================
+// IMPORT EXCEL
+// ========================================
+
+async function importExcel(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const tombol = document.getElementById("btnImport");
+
+    try {
+
+        pastikanAdmin();
+
+        if (!window.XLSX) {
+            throw new Error("Library Excel belum tersedia.");
+        }
+
+        tombol.disabled = true;
+
+        notifikasi("Membaca Excel...");
+
+        const buffer = await file.arrayBuffer();
+
+        const workbook = XLSX.read(buffer, {
+            type: "array",
+            cellDates: false
+        });
+
+        const sheet = workbook.Sheets[
+            workbook.SheetNames[0]
+        ];
+
+        const rows = XLSX.utils.sheet_to_json(sheet, {
+            defval: "",
+            raw: false
+        });
+
+        if (!rows.length) {
+            throw new Error("File Excel kosong.");
+        }
+
+        const kolom = {
+
+            divisi: ["divisi"],
+            departemen: ["departemen"],
+            nik: ["nik"],
+            nama: ["nama", "namalengkap"],
+            jabatan: ["jabatan"],
+            tmk: ["tmk", "tanggalmasukkerja"],
+            poh: ["poh"],
+            sistem_cuti: ["sistemcuti"],
+            shift_kerja: ["shiftkerja"],
+            grade: ["grade"],
+            nowa: ["nowa", "nomorwhatsapp", "nohp"],
+            status: ["status", "statuskaryawan"],
+            hak_akses: ["hakakses"]
+
+        };
+
+        let jumlahBaru = 0;
+        let jumlahHistoryGagal = 0;
+        let jumlahDuplikat = 0;
+        let jumlahTidakValid = 0;
+        let jumlahGagal = 0;
+
+        const daftarNIK = new Set();
+
+        for (const row of rows) {
+
+            pastikanAdmin();
+
+            const dataBaru = {};
+            const keys = Object.keys(row);
+
+            Object.keys(kolom).forEach(field => {
+
+                const key = keys.find(k =>
+                    kolom[field].includes(normalisasi(k))
+                );
+
+                dataBaru[field] = key
+                    ? String(row[key]).trim()
+                    : "";
+
+            });
+
+            dataBaru.nik = String(dataBaru.nik || "").trim();
+
+            if (!dataBaru.nik ||
+                !dataBaru.nama ||
+                !dataBaru.divisi ||
+                !dataBaru.departemen) {
+
+                jumlahTidakValid++;
+                continue;
+
+            }
+
+            if (daftarNIK.has(dataBaru.nik)) {
+
+                jumlahDuplikat++;
+                continue;
+
+            }
+
+            daftarNIK.add(dataBaru.nik);
+
+            try {
+
+                const referensi = doc(
+                    db,
+                    "karyawan",
+                    dataBaru.nik
+                );
+
+                const pemeriksaan = await getDoc(referensi);
+
+                if (pemeriksaan.exists()) {
+
+                    jumlahDuplikat++;
+                    continue;
+
+                }
+
+                await setDoc(referensi, {
+
+                    ...dataBaru,
+                    nik: dataBaru.nik,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
+
+                });
+
+                jumlahBaru++;
+
+                try {
+                    await catatHistory({
+                        jenis: "TAMBAH",
+                        nik: dataBaru.nik,
+                        nama: dataBaru.nama,
+                        keterangan: "Menambahkan data karyawan melalui Import Excel",
+                        halaman: "input_karyawan.html",
+                        detail: {
+                            sumber: "Import Excel",
+                            dataBaru: dataBaru
+                        }
+                    });
+                } catch (historyError) {
+                    jumlahHistoryGagal++;
+                    console.error("History import gagal:", dataBaru.nik, historyError);
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Import gagal:",
+                    dataBaru.nik,
+                    error
+                );
+
+                jumlahGagal++;
+
+            }
+
+        }
+
+        await muatReferensiKaryawan();
+
+        alert(
+            "IMPORT EXCEL SELESAI\n\n" +
+            "Berhasil: " + jumlahBaru +
+            "\nDuplikat: " + jumlahDuplikat +
+            "\nTidak lengkap: " + jumlahTidakValid +
+            "\nGagal: " + jumlahGagal +
+            "\nHistory gagal dicatat: " + jumlahHistoryGagal
+        );
+
+    } catch (error) {
+
+        console.error("Import error:", error);
+
+        alert(
+            "GAGAL IMPORT EXCEL\n\n" +
+            error.message
+        );
+
+    } finally {
+
+        tombol.disabled = !adminAktif;
+
+        event.target.value = "";
+
+    }
+
+}
+
+
+document.getElementById("fileExcel")
+.addEventListener("change", importExcel);
+
+
+// ========================================
+// EXPORT EXCEL
+// ========================================
+
+window.exportExcel = async function() {
+
+    const tombol = document.getElementById("btnExport");
+
+    try {
+
+        pastikanAdmin();
+
+        if (!window.XLSX) {
+            throw new Error("Library Excel belum tersedia.");
+        }
+
+        tombol.disabled = true;
+
+        notifikasi("Mengambil data Firestore...");
+
+        const snapshot = await getDocs(
+            collection(db, "karyawan")
+        );
+
+        if (snapshot.empty) {
+
+            alert("Belum ada data karyawan.");
+            return;
+
+        }
+
+        const data = snapshot.docs.map(dokumen => ({
+            ...dokumen.data(),
+            nik: dokumen.id
+        }));
+
+        const hasil = data.map(item => ({
+
+            "Divisi": item.divisi || "",
+            "Departemen": item.departemen || "",
+            "NIK": item.nik || "",
+            "Nama": item.nama || "",
+            "Jabatan": item.jabatan || "",
+            "TMK": item.tmk || "",
+            "POH": item.poh || "",
+            "Sistem Cuti": item.sistem_cuti || "",
+            "Shift Kerja": item.shift_kerja || "",
+            "Grade": item.grade || "",
+            "NoWA": item.nowa || "",
+            "Status": item.status || "",
+            "Hak Akses": item.hak_akses || ""
+
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(hasil);
+
+        worksheet["!cols"] = [
+            {wch:18},
+            {wch:18},
+            {wch:18},
+            {wch:28},
+            {wch:22},
+            {wch:13},
+            {wch:18},
+            {wch:18},
+            {wch:16},
+            {wch:12},
+            {wch:18},
+            {wch:15},
+            {wch:18}
+        ];
+
+        const workbook = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            "Data Karyawan"
+        );
+
+        XLSX.writeFile(
+            workbook,
+            "DATA_KARYAWAN_SITER.xlsx"
+        );
+
+        notifikasi(
+            "Export berhasil. Total " +
+            data.length +
+            " karyawan."
+        );
+
+    } catch (error) {
+
+        console.error("Export error:", error);
+
+        alert(
+            "GAGAL EXPORT DATA\n\n" +
+            error.message
+        );
+
+    } finally {
+
+        tombol.disabled = !adminAktif;
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>

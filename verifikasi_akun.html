@@ -1,0 +1,1774 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102e4f">
+
+<title>Verifikasi Akun SITER</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --navy: #102e4f;
+    --blue: #17466d;
+    --gold: #f0a923;
+    --bg: #eef2f6;
+    --text: #1e293b;
+    --green: #16a34a;
+    --red: #dc2626;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.header {
+    background: linear-gradient(120deg, var(--navy), var(--blue));
+    color: white;
+    padding: 16px;
+    box-shadow: 0 3px 10px #0002;
+}
+
+.header-title {
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.header-subtitle {
+    font-size: 12px;
+    color: #fbbf24;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+.container {
+    width: 100%;
+    max-width: 950px;
+    margin: auto;
+    padding: 15px;
+}
+
+.info-box {
+    background: white;
+    border-left: 4px solid var(--gold);
+    padding: 14px;
+    border-radius: 9px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px #00000008;
+}
+
+.info-box h3 {
+    font-size: 13px;
+    color: var(--navy);
+    margin-bottom: 6px;
+}
+
+.info-box p {
+    font-size: 11px;
+    line-height: 1.7;
+    color: #64748b;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 13px 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px #00000008;
+}
+
+.stat-card h2 {
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    font-size: 10px;
+    color: #64748b;
+    font-weight: bold;
+}
+
+.filter-box {
+    background: white;
+    padding: 13px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px #00000008;
+}
+
+.filter-box label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--navy);
+}
+
+select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 13px;
+    background: white;
+    outline: none;
+}
+
+select:focus {
+    border-color: var(--blue);
+}
+
+.section-title {
+    background: white;
+    border-left: 4px solid var(--gold);
+    padding: 13px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--navy);
+    margin-bottom: 12px;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.account-card {
+    background: white;
+    border-radius: 11px;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 3px 8px #00000008;
+}
+
+.account-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+}
+
+.account-icon {
+    width: 43px;
+    height: 43px;
+    background: #eaf2f9;
+    color: var(--blue);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.account-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.account-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-info h3 {
+    font-size: 14px;
+    color: var(--navy);
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+.account-info p {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 4px;
+    word-break: break-word;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: 7px;
+}
+
+.pending {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.aktif {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.ditolak {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.lain {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.detail-box {
+    margin-top: 13px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    font-size: 11px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.detail-box strong {
+    color: var(--navy);
+}
+
+.tidak-cocok {
+    color: #b91c1c;
+    font-weight: bold;
+}
+
+.cocok {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 13px;
+}
+
+.action-buttons button {
+    flex: 1;
+    padding: 11px 8px;
+    border: none;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-approve {
+    background: var(--green);
+    color: white;
+}
+
+.btn-reject {
+    background: var(--red);
+    color: white;
+}
+
+.action-buttons button:active {
+    transform: scale(.97);
+}
+
+.action-buttons button:disabled {
+    opacity: .5;
+}
+
+.pesan {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.pesan-error {
+    color: #b91c1c;
+    background: #fef2f2;
+}
+
+.footer {
+    background: var(--navy);
+    color: #cbd5e1;
+    text-align: center;
+    padding: 17px 10px;
+    font-size: 10px;
+    line-height: 1.8;
+    margin-top: 25px;
+}
+
+.footer strong {
+    color: var(--gold);
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.popup-box {
+    width: 100%;
+    max-width: 330px;
+    background: white;
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 8px 25px #0003;
+}
+
+.popup-box h3 {
+    color: var(--navy);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.popup-box p {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.popup-buttons button {
+    flex: 1;
+    border: none;
+    border-radius: 7px;
+    padding: 11px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.btn-batal {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.btn-konfirmasi {
+    background: var(--green);
+    color: white;
+}
+
+.btn-konfirmasi.tolak {
+    background: var(--red);
+}
+
+.btn-refresh {
+    width: 100%;
+    margin-top: 12px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 11px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-refresh:disabled {
+    opacity: .6;
+}
+
+@media (min-width: 600px) {
+    .list-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+    }
+}
+
+@media (max-width: 360px) {
+    .header-title {
+        font-size: 15px;
+    }
+
+    .stat-card h2 {
+        font-size: 18px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-title">SITER</div>
+    <div class="header-subtitle">
+        Satu Data, Satu Sistem, Satu Tujuan
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="info-box">
+        <h3>Kelola & Verifikasi Akun Karyawan</h3>
+        <p>
+            Verifikasi dilakukan berdasarkan NIK yang dicocokkan
+            dengan data resmi pada collection karyawan.
+            Nama pendaftar hanya digunakan sebagai informasi.
+            Persetujuan dan penolakan memperbarui status akun
+            serta mencatat berita aktivitas pada collection temporary.
+        </p>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <h2 id="jumlahPending">0</h2>
+            <p>MENUNGGU</p>
+        </div>
+
+        <div class="stat-card">
+            <h2 id="jumlahAktif">0</h2>
+            <p>AKTIF</p>
+        </div>
+
+        <div class="stat-card">
+            <h2 id="jumlahDitolak">0</h2>
+            <p>DITOLAK</p>
+        </div>
+    </div>
+
+    <div class="filter-box">
+        <label for="filterStatus">Filter Status</label>
+
+        <select id="filterStatus">
+            <option value="semua">Semua Akun</option>
+            <option value="pending">Menunggu Verifikasi</option>
+            <option value="aktif">Aktif</option>
+            <option value="ditolak">Ditolak</option>
+        </select>
+
+        <button class="btn-refresh" id="btnRefresh">
+            ↻ Muat Ulang Data
+        </button>
+    </div>
+
+    <div class="section-title">
+        DAFTAR PENDAFTARAN AKUN
+    </div>
+
+    <div id="daftarAkun" class="list-container">
+        <div class="pesan">Memuat data...</div>
+    </div>
+
+</main>
+
+<footer class="footer">
+    <strong>Created By : Heti Administration Officer</strong>
+    <br>
+    For Operasional Pelabuhan Terminal Khusus
+</footer>
+
+<div class="popup-overlay" id="popup">
+
+    <div class="popup-box">
+
+        <h3 id="popupJudul">Konfirmasi</h3>
+
+        <p id="popupIsi"></p>
+
+        <div class="popup-buttons">
+
+            <button class="btn-batal" id="btnBatal">
+                Batal
+            </button>
+
+            <button class="btn-konfirmasi" id="btnKonfirmasi">
+                Lanjutkan
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module">
+
+// ================================================
+// FIREBASE
+// ================================================
+
+import { auth, db } from "./firebase-config.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    writeBatch,
+    serverTimestamp,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// ================================================
+// VARIABEL
+// ================================================
+
+const daftarAkun =
+    document.getElementById("daftarAkun");
+
+const filterStatus =
+    document.getElementById("filterStatus");
+
+let seluruhAkun = [];
+let dataKaryawan = new Map();
+let adminAktif = null;
+let sedangMemuat = false;
+let sedangMemproses = false;
+
+
+// ================================================
+// LOGIN DAN HAK AKSES
+// ================================================
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        window.location.href = "index.html";
+
+        return;
+
+    }
+
+    try {
+
+        const adminRef = doc(
+            db,
+            "users",
+            user.uid
+        );
+
+        const adminSnap = await getDoc(adminRef);
+
+        if (!adminSnap.exists()) {
+
+            tampilkanError(
+                "Profil pengguna tidak ditemukan."
+            );
+
+            return;
+
+        }
+
+        const adminData = adminSnap.data();
+
+        const role = String(
+            adminData.role || ""
+        ).toLowerCase().trim();
+
+        const status = String(
+            adminData.status || ""
+        ).toLowerCase().trim();
+
+        const roleDiizinkan = [
+            "super_admin",
+            "admin_administrasi",
+            "admin_departemen"
+        ];
+
+        if (
+            !roleDiizinkan.includes(role) ||
+            status !== "aktif"
+        ) {
+
+            tampilkanError(
+                "Akses ditolak. Halaman ini hanya untuk administrator aktif."
+            );
+
+            return;
+
+        }
+
+        adminAktif = user;
+
+        await muatDataKaryawan();
+
+        await muatPendaftaran();
+
+    } catch (error) {
+
+        console.error(error);
+
+        tampilkanError(
+            "Gagal memeriksa akses: " +
+            error.message
+        );
+
+    }
+
+});
+
+
+// ================================================
+// MEMUAT DATA KARYAWAN
+// ================================================
+
+async function muatDataKaryawan() {
+
+    dataKaryawan.clear();
+
+    const snapshot = await getDocs(
+        collection(db, "karyawan")
+    );
+
+    snapshot.forEach((item) => {
+
+        const data = item.data();
+
+        const nik = String(
+            data.nik || item.id
+        ).trim();
+
+        if (nik) {
+
+            dataKaryawan.set(nik, data);
+
+        }
+
+    });
+
+}
+
+
+// ================================================
+// MEMUAT PENDAFTARAN
+// SUMBER: PENDAFTARAN_AKUN
+// ================================================
+
+async function muatPendaftaran() {
+
+    if (sedangMemuat) return;
+
+    sedangMemuat = true;
+
+    daftarAkun.innerHTML = `
+        <div class="pesan">
+            Memuat pendaftaran akun...
+        </div>
+    `;
+
+    try {
+
+        const snapshot = await getDocs(
+            collection(db, "pendaftaran_akun")
+        );
+
+        seluruhAkun = [];
+
+        snapshot.forEach((item) => {
+
+            const data = item.data();
+
+            seluruhAkun.push({
+                id: item.id,
+                ...data
+            });
+
+        });
+
+
+        // PENDING DIUTAMAKAN
+
+        seluruhAkun.sort((a, b) => {
+
+            const sa = normalisasiStatus(a.status);
+            const sb = normalisasiStatus(b.status);
+
+            if (sa === "pending" && sb !== "pending") {
+                return -1;
+            }
+
+            if (sb === "pending" && sa !== "pending") {
+                return 1;
+            }
+
+            return String(a.nama || "").localeCompare(
+                String(b.nama || "")
+            );
+
+        });
+
+        perbaruiStatistik();
+
+        tampilkanDaftar();
+
+    } catch (error) {
+
+        console.error(error);
+
+        tampilkanError(
+            "Gagal membaca pendaftaran_akun: " +
+            error.message
+        );
+
+    } finally {
+
+        sedangMemuat = false;
+
+    }
+
+}
+
+
+// ================================================
+// NORMALISASI STATUS
+// ================================================
+
+function normalisasiStatus(status) {
+
+    if (!status) {
+        return "pending";
+    }
+
+    const s = String(status)
+        .toLowerCase()
+        .trim();
+
+    if (
+        s === "pending" ||
+        s === "menunggu" ||
+        s === "menunggu_verifikasi" ||
+        s === "menunggu verifikasi"
+    ) {
+
+        return "pending";
+
+    }
+
+    if (
+        s === "aktif" ||
+        s === "disetujui" ||
+        s === "approved"
+    ) {
+
+        return "aktif";
+
+    }
+
+    if (
+        s === "ditolak" ||
+        s === "reject" ||
+        s === "rejected"
+    ) {
+
+        return "ditolak";
+
+    }
+
+    return s;
+
+}
+
+
+// ================================================
+// STATISTIK
+// ================================================
+
+function perbaruiStatistik() {
+
+    let pending = 0;
+    let aktif = 0;
+    let ditolak = 0;
+
+    seluruhAkun.forEach((akun) => {
+
+        const status =
+            normalisasiStatus(akun.status);
+
+        if (status === "pending") pending++;
+
+        if (status === "aktif") aktif++;
+
+        if (status === "ditolak") ditolak++;
+
+    });
+
+    document.getElementById("jumlahPending")
+        .textContent = pending;
+
+    document.getElementById("jumlahAktif")
+        .textContent = aktif;
+
+    document.getElementById("jumlahDitolak")
+        .textContent = ditolak;
+
+}
+
+
+// ================================================
+// MENAMPILKAN DAFTAR
+// ================================================
+
+function tampilkanDaftar() {
+
+    const filter = filterStatus.value;
+
+    const dataTampil = seluruhAkun.filter(
+        (akun) => {
+
+            const status =
+                normalisasiStatus(akun.status);
+
+            if (filter === "semua") {
+                return true;
+            }
+
+            return status === filter;
+
+        }
+    );
+
+    if (dataTampil.length === 0) {
+
+        daftarAkun.innerHTML = `
+            <div class="pesan">
+                Tidak ada pendaftaran akun.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    daftarAkun.innerHTML = dataTampil.map(
+        (akun) => {
+
+            const nik = String(
+                akun.nik || akun.id
+            ).trim();
+
+            const karyawan =
+                dataKaryawan.get(nik);
+
+            const status =
+                normalisasiStatus(akun.status);
+
+            const namaDaftar =
+                akun.nama ||
+                akun.name ||
+                "-";
+
+            const namaResmi = karyawan
+                ? karyawan.nama || karyawan.name || "-"
+                : "NIK tidak ditemukan";
+
+            const jabatan = karyawan
+                ? karyawan.jabatan || "-"
+                : "-";
+
+            const departemen = karyawan
+                ? karyawan.departemen || "-"
+                : "-";
+
+            const divisi = karyawan
+                ? karyawan.divisi || "-"
+                : "-";
+
+            const tmk = karyawan
+                ? karyawan.tmk ||
+                  karyawan.tanggalMasuk ||
+                  karyawan.tanggal_masuk ||
+                  "-"
+                : "-";
+
+            const cocok = !!karyawan;
+
+            const uid = String(
+                akun.uid ||
+                akun.userId ||
+                akun.authUid ||
+                akun.idUser ||
+                ""
+            ).trim();
+
+            let badgeText = "Menunggu Verifikasi";
+            let badgeClass = "pending";
+
+            if (status === "aktif") {
+
+                badgeText = "Aktif";
+                badgeClass = "aktif";
+
+            } else if (status === "ditolak") {
+
+                badgeText = "Ditolak";
+                badgeClass = "ditolak";
+
+            } else if (status !== "pending") {
+
+                badgeText = status;
+                badgeClass = "lain";
+
+            }
+
+            const namaBerbeda =
+                cocok &&
+                String(namaDaftar)
+                    .trim()
+                    .toLowerCase() !==
+                String(namaResmi)
+                    .trim()
+                    .toLowerCase();
+
+
+            return `
+
+            <div class="account-card">
+
+                <div class="account-top">
+
+                    <div class="account-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="12" cy="8" r="4"/>
+
+                            <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
+
+                        </svg>
+
+                    </div>
+
+                    <div class="account-info">
+
+                        <h3>${aman(namaDaftar)}</h3>
+
+                        <p>NIK: ${aman(nik)}</p>
+
+                        <span class="badge ${badgeClass}">
+                            ${aman(badgeText)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <strong>DATA RESMI KARYAWAN</strong><br>
+
+                    <strong>Nama:</strong>
+                    ${aman(namaResmi)}<br>
+
+                    <strong>Jabatan:</strong>
+                    ${aman(jabatan)}<br>
+
+                    <strong>Departemen:</strong>
+                    ${aman(departemen)}<br>
+
+                    <strong>Divisi:</strong>
+                    ${aman(divisi)}<br>
+
+                    <strong>TMK:</strong>
+                    ${aman(tmk)}<br>
+
+                    <strong>Kecocokan NIK:</strong>
+
+                    ${
+                        cocok
+                        ?
+                        `
+                        <span class="cocok">
+                            NIK ditemukan dalam data karyawan
+                        </span>
+                        `
+                        :
+                        `
+                        <span class="tidak-cocok">
+                            NIK tidak ditemukan
+                        </span>
+                        `
+                    }
+
+                    ${
+                        namaBerbeda
+                        ?
+                        `
+                        <br>
+
+                        <strong>Perbedaan Nama:</strong>
+
+                        <span style="color:#b45309">
+
+                            Nama pendaftaran berbeda dengan nama resmi.
+                            Verifikasi tetap berdasarkan NIK.
+
+                        </span>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+
+                ${
+                    cocok && uid
+                    ?
+                    `
+                    <div class="action-buttons">
+
+                        ${
+                            status !== "aktif"
+                            ?
+                            `
+                            <button class="btn-approve"
+                                data-id="${aman(akun.id)}"
+                                data-action="aktif">
+
+                                ✓ Setujui / Aktifkan
+
+                            </button>
+                            `
+                            :
+                            ""
+                        }
+
+                        ${
+                            status !== "ditolak"
+                            ?
+                            `
+                            <button class="btn-reject"
+                                data-id="${aman(akun.id)}"
+                                data-action="ditolak">
+
+                                ✕ Tolak / Nonaktifkan
+
+                            </button>
+                            `
+                            :
+                            ""
+                        }
+
+                    </div>
+                    `
+                    :
+                    `
+                    <div class="pesan pesan-error"
+                         style="margin-top:12px">
+
+                        ${
+                            !cocok
+                            ?
+                            "NIK tidak ditemukan di collection karyawan. Verifikasi tidak dapat dilakukan."
+                            :
+                            "UID akun tidak ditemukan. Verifikasi tidak dapat dilakukan."
+                        }
+
+                    </div>
+                    `
+                }
+
+            </div>
+
+            `;
+
+        }
+    ).join("");
+
+}
+
+
+// ================================================
+// HTML ESCAPE
+// ================================================
+
+function aman(value) {
+
+    return String(value ?? "").replace(
+        /[&<>"']/g,
+        (char) => {
+
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[char];
+
+        }
+    );
+
+}
+
+
+// ================================================
+// TOMBOL TINDAKAN
+// ================================================
+
+daftarAkun.addEventListener(
+    "click",
+    function(event) {
+
+        const tombol =
+            event.target.closest("button[data-id]");
+
+        if (!tombol) return;
+
+        const id = tombol.dataset.id;
+
+        const tindakan =
+            tombol.dataset.action;
+
+        konfirmasiTindakan(
+            id,
+            tindakan
+        );
+
+    }
+);
+
+
+// ================================================
+// POPUP KONFIRMASI
+// ================================================
+
+function konfirmasiTindakan(
+    id,
+    tindakan
+) {
+
+    const akun = seluruhAkun.find(
+        item => item.id === id
+    );
+
+    if (!akun) {
+
+        alert(
+            "Pendaftaran tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+    const nik = String(
+        akun.nik || akun.id
+    ).trim();
+
+    const karyawan =
+        dataKaryawan.get(nik);
+
+    if (!karyawan) {
+
+        alert(
+            "NIK tidak ditemukan di collection karyawan. " +
+            "Akun tidak dapat diverifikasi."
+        );
+
+        return;
+
+    }
+
+    const uid = String(
+        akun.uid ||
+        akun.userId ||
+        akun.authUid ||
+        akun.idUser ||
+        ""
+    ).trim();
+
+    if (!uid) {
+
+        alert(
+            "UID akun tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+    tindakanPending = {
+        id: id,
+        uid: uid,
+        nik: nik,
+        tindakan: tindakan,
+        akun: akun,
+        karyawan: karyawan
+    };
+
+    const judul =
+        document.getElementById("popupJudul");
+
+    const isi =
+        document.getElementById("popupIsi");
+
+    const tombol =
+        document.getElementById("btnKonfirmasi");
+
+    if (tindakan === "aktif") {
+
+        judul.textContent =
+            "Setujui Akun";
+
+        isi.textContent =
+            "Setujui akun NIK " +
+            nik +
+            "? Data resmi karyawan: " +
+            (karyawan.nama || "-") +
+            ". Akun akan diaktifkan.";
+
+        tombol.textContent =
+            "Ya, Setujui";
+
+        tombol.className =
+            "btn-konfirmasi";
+
+    } else {
+
+        judul.textContent =
+            "Tolak Akun";
+
+        isi.textContent =
+            "Tolak atau nonaktifkan akun dengan NIK " +
+            nik +
+            "? Status akun akan menjadi ditolak.";
+
+        tombol.textContent =
+            "Ya, Tolak";
+
+        tombol.className =
+            "btn-konfirmasi tolak";
+
+    }
+
+    document.getElementById("popup")
+        .style.display = "flex";
+
+}
+
+
+// ================================================
+// TUTUP POPUP
+// ================================================
+
+document.getElementById("btnBatal")
+    .addEventListener(
+        "click",
+        tutupPopup
+    );
+
+function tutupPopup() {
+
+    document.getElementById("popup")
+        .style.display = "none";
+
+    tindakanPending = null;
+
+}
+
+
+// ================================================
+// PROSES VERIFIKASI
+// ================================================
+
+document.getElementById("btnKonfirmasi")
+    .addEventListener(
+        "click",
+        async function() {
+
+            if (
+                !tindakanPending ||
+                !adminAktif ||
+                sedangMemproses
+            ) {
+
+                return;
+
+            }
+
+            sedangMemproses = true;
+
+            const tombol = this;
+
+            tombol.disabled = true;
+
+            tombol.textContent =
+                "Memproses...";
+
+            try {
+
+                const data =
+                    tindakanPending;
+
+                const statusBaru =
+                    data.tindakan;
+
+                const karyawan =
+                    data.karyawan;
+
+                const namaResmi =
+                    karyawan.nama ||
+                    karyawan.name ||
+                    "-";
+
+                const jabatan =
+                    karyawan.jabatan || "-";
+
+                const departemen =
+                    karyawan.departemen || "-";
+
+                const divisi =
+                    karyawan.divisi || "-";
+
+
+                // =================================
+                // REFERENSI
+                // =================================
+
+                const userRef = doc(
+                    db,
+                    "users",
+                    data.uid
+                );
+
+                const pendaftaranRef = doc(
+                    db,
+                    "pendaftaran_akun",
+                    data.id
+                );
+
+
+                // =================================
+                // PEMERIKSAAN ULANG
+                // =================================
+
+                const [userSnap, pendaftaranSnap] =
+                    await Promise.all([
+
+                        getDoc(userRef),
+
+                        getDoc(pendaftaranRef)
+
+                    ]);
+
+                if (!userSnap.exists()) {
+
+                    throw new Error(
+                        "Dokumen users tidak ditemukan."
+                    );
+
+                }
+
+                if (!pendaftaranSnap.exists()) {
+
+                    throw new Error(
+                        "Dokumen pendaftaran tidak ditemukan."
+                    );
+
+                }
+
+                const pendaftaranData =
+                    pendaftaranSnap.data();
+
+                if (
+                    String(pendaftaranData.uid || "")
+                    !== data.uid
+                ) {
+
+                    throw new Error(
+                        "UID pendaftaran tidak sesuai."
+                    );
+
+                }
+
+                if (
+                    String(
+                        pendaftaranData.nik ||
+                        pendaftaranSnap.id
+                    ).trim()
+                    !== data.nik
+                ) {
+
+                    throw new Error(
+                        "NIK pendaftaran tidak sesuai."
+                    );
+
+                }
+
+                // PENCocokan ulang dengan data karyawan
+                // menggunakan NIK, bukan nama.
+
+                const karyawanSnap = await getDocs(
+                    collection(db, "karyawan")
+                );
+
+                let dataResmiTerbaru = null;
+
+                karyawanSnap.forEach((item) => {
+
+                    const k = item.data();
+
+                    const nikKaryawan = String(
+                        k.nik || item.id
+                    ).trim();
+
+                    if (
+                        nikKaryawan === data.nik
+                    ) {
+
+                        dataResmiTerbaru = k;
+
+                    }
+
+                });
+
+                if (!dataResmiTerbaru) {
+
+                    throw new Error(
+                        "NIK tidak lagi ditemukan dalam collection karyawan."
+                    );
+
+                }
+
+                const namaFinal =
+                    dataResmiTerbaru.nama ||
+                    dataResmiTerbaru.name ||
+                    "-";
+
+                const jabatanFinal =
+                    dataResmiTerbaru.jabatan || "-";
+
+                const departemenFinal =
+                    dataResmiTerbaru.departemen || "-";
+
+                const divisiFinal =
+                    dataResmiTerbaru.divisi || "-";
+
+
+                // =================================
+                // BATCH
+                // =================================
+
+                const batch = writeBatch(db);
+
+
+                // =================================
+                // UPDATE PROFIL USERS
+                // =================================
+
+                batch.update(userRef, {
+
+                    nik: data.nik,
+
+                    nama: namaFinal,
+
+                    jabatan: jabatanFinal,
+
+                    departemen: departemenFinal,
+
+                    divisi: divisiFinal,
+
+                    role: "karyawan",
+
+                    status: statusBaru,
+
+                    verifiedAt: serverTimestamp(),
+
+                    verifiedBy: adminAktif.uid
+
+                });
+
+
+                // =================================
+                // UPDATE PENDAFTARAN
+                // =================================
+
+                batch.update(
+                    pendaftaranRef,
+                    {
+
+                        status: statusBaru,
+
+                        namaResmi: namaFinal,
+
+                        jabatan: jabatanFinal,
+
+                        departemen: departemenFinal,
+
+                        divisi: divisiFinal,
+
+                        verifiedAt: serverTimestamp(),
+
+                        verifiedBy: adminAktif.uid,
+
+                        updatedAt: serverTimestamp()
+
+                    }
+                );
+
+
+                // =================================
+                // BERITA PUBLIK TEMPORARY
+                // DATA AMAN, TANPA NIK DAN UID
+                // =================================
+
+                const beritaRef = doc(
+                    collection(db, "temporary")
+                );
+
+                batch.set(
+                    beritaRef,
+                    {
+
+                        jenis: "BERITA_PENDAFTARAN",
+
+                        nama: namaFinal,
+
+                        status: statusBaru,
+
+                        pesan:
+                            statusBaru === "aktif"
+                            ?
+                            namaFinal +
+                            " telah disetujui dan akun SITER telah diaktifkan."
+                            :
+                            namaFinal +
+                            " — status pendaftaran akun SITER: ditolak.",
+
+                        createdAt: serverTimestamp()
+
+                    }
+                );
+
+
+                // =================================
+                // CATATAN AKTIVITAS ADMIN
+                // DOKUMEN TERPISAH
+                // =================================
+
+                const auditRef = doc(
+                    collection(db, "temporary")
+                );
+
+                batch.set(
+                    auditRef,
+                    {
+
+                        jenis: "AUDIT_VERIFIKASI_AKUN",
+
+                        tindakan: statusBaru,
+
+                        status: statusBaru,
+
+                        nik: data.nik,
+
+                        uid: data.uid,
+
+                        nama: namaFinal,
+
+                        namaPendaftar:
+                            data.akun.nama ||
+                            namaFinal,
+
+                        jabatan: jabatanFinal,
+
+                        departemen: departemenFinal,
+
+                        divisi: divisiFinal,
+
+                        uidPetugas: adminAktif.uid,
+
+                        petugasEmail:
+                            adminAktif.email || "",
+
+                        keterangan:
+                            statusBaru === "aktif"
+                            ?
+                            "Akun disetujui dan diaktifkan."
+                            :
+                            "Akun ditolak atau dinonaktifkan.",
+
+                        createdAt: serverTimestamp(),
+
+                        halaman:
+                            "verifikasi_akun.html"
+
+                    }
+                );
+
+
+                // =================================
+                // COMMIT
+                // =================================
+
+                await batch.commit();
+
+
+                // =================================
+                // SELESAI
+                // =================================
+
+                tutupPopup();
+
+                alert(
+                    statusBaru === "aktif"
+                    ?
+                    "AKUN BERHASIL DISETUJUI!\n\n" +
+                    "Data resmi karyawan telah disalin ke users.\n" +
+                    "Status akun: AKTIF."
+                    :
+                    "AKUN BERHASIL DITOLAK!\n\n" +
+                    "Status akun telah diperbarui."
+                );
+
+                await muatPendaftaran();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Verifikasi:",
+                    error
+                );
+
+                alert(
+                    "GAGAL MEMPROSES VERIFIKASI.\n\n" +
+                    (error.message || "")
+                );
+
+            } finally {
+
+                sedangMemproses = false;
+
+                tombol.disabled = false;
+
+                tombol.textContent =
+                    "Lanjutkan";
+
+            }
+
+        }
+    );
+
+
+// ================================================
+// FILTER
+// ================================================
+
+filterStatus.addEventListener(
+    "change",
+    tampilkanDaftar
+);
+
+
+// ================================================
+// REFRESH
+// ================================================
+
+document.getElementById("btnRefresh")
+    .addEventListener(
+        "click",
+        async function() {
+
+            if (!adminAktif) return;
+
+            if (sedangMemuat) return;
+
+            this.disabled = true;
+
+            this.textContent =
+                "Memuat...";
+
+            try {
+
+                await muatDataKaryawan();
+
+                await muatPendaftaran();
+
+            } finally {
+
+                this.disabled = false;
+
+                this.textContent =
+                    "↻ Muat Ulang Data";
+
+            }
+
+        }
+    );
+
+
+// ================================================
+// ERROR
+// ================================================
+
+function tampilkanError(pesan) {
+
+    daftarAkun.innerHTML = `
+        <div class="pesan pesan-error">
+            ${aman(pesan)}
+        </div>
+    `;
+
+}
+
+
+// ================================================
+// MENUTUP POPUP AREA LUAR
+// ================================================
+
+document.getElementById("popup")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+                tutupPopup();
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
