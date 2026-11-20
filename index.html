@@ -1,0 +1,923 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071f46">
+<meta name="description" content="SITER - Sistem Informasi Terminal Khusus">
+<title>SITER | Sistem Informasi Terminal Khusus</title>
+
+<style>
+:root {
+  --navy:#071f46;
+  --navy2:#0b3268;
+  --blue:#087ac5;
+  --red:#e51d2a;
+  --white:#fff;
+  --ink:#15243a;
+  --muted:#718096;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+html {
+  min-height:100%;
+}
+
+body {
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--ink);
+  background:#eef3f8;
+  display:flex;
+  flex-direction:column;
+}
+
+.page {
+  position:relative;
+  isolation:isolate;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:28px 18px 34px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(23,116,178,.28),transparent 48%),
+    linear-gradient(145deg,#061a3a 0%,#092b59 55%,#071f46 100%);
+}
+
+.page:before,
+.page:after {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:-10%;
+  width:120%;
+  height:170px;
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.page:before {
+  bottom:4%;
+  background:rgba(5,130,190,.15);
+  transform:rotate(-5deg);
+}
+
+.page:after {
+  bottom:-105px;
+  background:rgba(255,255,255,.07);
+  transform:rotate(4deg);
+}
+
+.harbor {
+  position:absolute;
+  z-index:-1;
+  top:0;
+  left:0;
+  right:0;
+  height:190px;
+  opacity:.18;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.crane {
+  position:absolute;
+  top:28px;
+  left:8%;
+  width:130px;
+  height:112px;
+  border-top:3px solid #d7eaff;
+  border-left:3px solid #d7eaff;
+  transform:skewY(-23deg);
+}
+
+.crane:before {
+  content:"";
+  position:absolute;
+  left:-12px;
+  top:0;
+  width:150px;
+  border-top:3px solid #d7eaff;
+}
+
+.crane:after {
+  content:"";
+  position:absolute;
+  left:34px;
+  top:0;
+  height:115px;
+  border-left:3px solid #d7eaff;
+  box-shadow:35px 0 0 -1px #d7eaff,70px 0 0 -1px #d7eaff;
+}
+
+.tower {
+  position:absolute;
+  right:9%;
+  top:42px;
+  width:35px;
+  height:95px;
+  border:3px solid #d7eaff;
+  border-bottom:0;
+  transform:perspective(70px) rotateX(-5deg);
+}
+
+.tower:before {
+  content:"";
+  position:absolute;
+  top:-13px;
+  left:-14px;
+  width:57px;
+  height:15px;
+  border:3px solid #d7eaff;
+  border-radius:50% 50% 0 0;
+}
+
+.login {
+  width:100%;
+  max-width:410px;
+  background:rgba(255,255,255,.98);
+  border:1px solid rgba(255,255,255,.6);
+  border-radius:20px;
+  padding:25px 23px 23px;
+  box-shadow:0 18px 55px rgba(0,0,0,.27);
+}
+
+.brand {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0 auto 13px;
+}
+
+.brand img {
+  display:block;
+  width:min(100%,290px);
+  height:auto;
+  object-fit:contain;
+}
+
+.welcome {
+  text-align:center;
+  margin:5px 0 22px;
+}
+
+.welcome h1 {
+  color:var(--navy);
+  font-size:21px;
+  line-height:1.25;
+  margin:0 0 7px;
+}
+
+.welcome p {
+  color:var(--blue);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.5px;
+  margin:0;
+}
+
+.field {
+  margin-bottom:15px;
+}
+
+.field label {
+  display:block;
+  margin-bottom:7px;
+  color:#24364e;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.7px;
+}
+
+.input-wrap {
+  position:relative;
+}
+
+.field input {
+  width:100%;
+  height:47px;
+  border:1px solid #d7e0eb;
+  border-radius:10px;
+  background:#f8fafc;
+  padding:0 13px;
+  color:var(--ink);
+  font-size:14px;
+  outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+
+.field input:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(8,122,197,.12);
+  background:#fff;
+}
+
+.password-input {
+  padding-right:48px !important;
+}
+
+.eye {
+  position:absolute;
+  right:5px;
+  top:5px;
+  width:37px;
+  height:37px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#53657c;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+}
+
+.eye:active {
+  background:#eaf1f8;
+}
+
+.eye svg {
+  width:20px;
+  height:20px;
+}
+
+.submit {
+  width:100%;
+  height:48px;
+  margin-top:5px;
+  border:0;
+  border-radius:10px;
+  background:linear-gradient(100deg,var(--navy),var(--blue));
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.5px;
+  cursor:pointer;
+  box-shadow:0 7px 16px rgba(8,75,135,.2);
+}
+
+.submit:active {
+  transform:translateY(1px);
+}
+
+.submit:disabled {
+  opacity:.65;
+  cursor:not-allowed;
+}
+
+.message {
+  display:none;
+  margin:13px 0 0;
+  padding:11px;
+  border-radius:8px;
+  font-size:12px;
+  line-height:1.5;
+  text-align:center;
+}
+
+.message.error {
+  display:block;
+  color:#a71924;
+  background:#fff0f1;
+  border:1px solid #ffd1d5;
+}
+
+.message.success {
+  display:block;
+  color:#17683b;
+  background:#eaf9f0;
+  border:1px solid #c5efd5;
+}
+
+.register {
+  text-align:center;
+  margin:19px 0 0;
+  font-size:12px;
+  color:#69788b;
+  line-height:1.6;
+}
+
+.register a {
+  color:#0873b9;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.register a:active {
+  color:var(--red);
+}
+
+.footer {
+  padding:15px 12px 17px;
+  background:#061a3a;
+  color:#dce8f6;
+  text-align:center;
+  font-size:10px;
+  line-height:1.65;
+}
+
+.footer strong {
+  color:#fff;
+}
+
+.connection {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  margin-top:7px;
+  color:#b9d7ef;
+  font-size:10px;
+}
+
+.connection-dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#28c76f;
+  box-shadow:0 0 0 3px rgba(40,199,111,.13);
+}
+
+.connection.offline .connection-dot {
+  background:#f0a329;
+  box-shadow:0 0 0 3px rgba(240,163,41,.13);
+}
+
+@media (max-width:360px) {
+  .login {
+    padding:21px 17px;
+    border-radius:16px;
+  }
+
+  .brand img {
+    width:min(100%,255px);
+  }
+
+  .welcome h1 {
+    font-size:19px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <div class="harbor" aria-hidden="true">
+    <div class="crane"></div>
+    <div class="tower"></div>
+  </div>
+
+  <section class="login" aria-label="Login SITER">
+
+    <div class="brand">
+      <img src="assets/logo.png"
+           alt="SITER - Sistem Informasi Terminal Khusus">
+    </div>
+
+    <div class="welcome">
+      <h1>Selamat Datang, di SITER</h1>
+      <p>Satu data, satu sistem, satu tujuan</p>
+    </div>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label for="nik">NIK</label>
+        <input
+          id="nik"
+          name="nik"
+          type="text"
+          inputmode="numeric"
+          autocomplete="username"
+          placeholder="Masukkan NIK"
+          maxlength="30"
+          required>
+      </div>
+
+      <div class="field">
+        <label for="password">PASSWORD</label>
+
+        <div class="input-wrap">
+
+          <input
+            class="password-input"
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Masukkan password"
+            required>
+
+          <button
+            class="eye"
+            id="togglePassword"
+            type="button"
+            aria-label="Tampilkan password"
+            aria-pressed="false">
+
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 aria-hidden="true">
+              <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+
+          </button>
+        </div>
+      </div>
+
+      <button class="submit" id="loginButton" type="submit">
+        MASUK
+      </button>
+
+      <div class="message"
+           id="loginMessage"
+           role="alert"
+           aria-live="polite"></div>
+
+    </form>
+
+    <p class="register">
+      Belum punya akun,
+      <a href="daftar_sekarang.html">Daftar Sekarang</a>
+    </p>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  <strong>Created by : Heti Administration Officer</strong>
+  <br>
+  For Operasional Pelabuhan Terminal Khusus
+
+  <div class="connection" id="connection">
+    <span class="connection-dot"></span>
+    <span id="connectionText">Memeriksa koneksi...</span>
+  </div>
+</footer>
+
+<script type="module">
+
+import { db, auth } from "./firebase-config.js";
+import { catatHistory } from "./history.js";
+
+import {
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* =========================================
+   KONFIGURASI LOGIN
+========================================= */
+
+/*
+   EMAIL INTERNAL HARUS SAMA DENGAN
+   EMAIL INTERNAL PADA DAFTAR_SEKARANG.HTML
+
+   Format:
+   NIK@siter-login.com
+*/
+
+const DOMAIN_LOGIN = "@siter-login.com";
+
+
+/* =========================================
+   ELEMENT
+========================================= */
+
+const loginForm = document.getElementById("loginForm");
+const nikInput = document.getElementById("nik");
+const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+const loginButton = document.getElementById("loginButton");
+const loginMessage = document.getElementById("loginMessage");
+
+
+/* =========================================
+   TAMPILKAN / SEMBUNYIKAN PASSWORD
+========================================= */
+
+togglePassword.addEventListener("click", function() {
+
+  const showing = passwordInput.type === "password";
+
+  passwordInput.type = showing ? "text" : "password";
+
+  togglePassword.setAttribute(
+    "aria-pressed",
+    String(showing)
+  );
+
+  togglePassword.setAttribute(
+    "aria-label",
+    showing ? "Sembunyikan password" : "Tampilkan password"
+  );
+
+});
+
+
+/* =========================================
+   PESAN
+========================================= */
+
+function showMessage(message, type = "error") {
+
+  loginMessage.textContent = message;
+
+  loginMessage.className = "message " + type;
+
+}
+
+function hideMessage() {
+
+  loginMessage.textContent = "";
+
+  loginMessage.className = "message";
+
+}
+
+
+/* =========================================
+   ERROR FIREBASE
+========================================= */
+
+function getErrorMessage(error) {
+
+  console.error("Firebase error:", error);
+
+  switch (error.code) {
+
+    case "auth/invalid-email":
+      return "Format login internal tidak valid.";
+
+    case "auth/user-not-found":
+    case "auth/invalid-credential":
+    case "auth/wrong-password":
+      return "NIK atau password salah.";
+
+    case "auth/user-disabled":
+      return "Akun Firebase dinonaktifkan.";
+
+    case "auth/too-many-requests":
+      return "Terlalu banyak percobaan login. Coba kembali nanti.";
+
+    case "auth/network-request-failed":
+      return "Koneksi internet bermasalah.";
+
+    case "permission-denied":
+    case "firestore/permission-denied":
+      return "Firestore menolak akses. Periksa Rules.";
+
+    default:
+
+      return error.message
+        ? "Terjadi kesalahan: " + error.message
+        : "Login gagal. Periksa Firebase dan koneksi.";
+
+  }
+
+}
+
+
+/* =========================================
+   PROSES LOGIN
+========================================= */
+
+loginForm.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  hideMessage();
+
+  if (!navigator.onLine) {
+
+    showMessage("Tidak ada koneksi internet.");
+
+    return;
+
+  }
+
+  const nik = nikInput.value.trim();
+  const password = passwordInput.value;
+
+  if (!nik || !password) {
+
+    showMessage("NIK dan password wajib diisi.");
+
+    return;
+
+  }
+
+  if (/\s/.test(nik) || nik.includes("@")) {
+
+    showMessage("Format NIK tidak valid.");
+
+    return;
+
+  }
+
+  loginButton.disabled = true;
+  loginButton.textContent = "MEMERIKSA AKUN...";
+
+  let berhasil = false;
+
+  try {
+
+    /* =====================================
+       1. LOGIN FIREBASE AUTHENTICATION
+    ===================================== */
+
+    const emailInternal = nik + DOMAIN_LOGIN;
+
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      emailInternal,
+      password
+    );
+
+    const user = credential.user;
+
+
+    /* =====================================
+       2. MEMERIKSA PROFIL USERS
+    ===================================== */
+
+    const userRef = doc(db, "users", user.uid);
+
+    const userSnapshot = await getDoc(userRef);
+
+    if (!userSnapshot.exists()) {
+
+      await signOut(auth);
+
+      showMessage(
+        "Profil pengguna tidak ditemukan di Firestore."
+      );
+
+      return;
+
+    }
+
+    const profile = userSnapshot.data();
+
+
+    /* =====================================
+       3. VALIDASI NIK
+    ===================================== */
+
+    const storedNik = String(profile.nik || "").trim();
+
+    if (storedNik !== nik) {
+
+      await signOut(auth);
+
+      showMessage(
+        "NIK tidak cocok dengan profil akun."
+      );
+
+      return;
+
+    }
+
+
+    /* =====================================
+       4. VALIDASI STATUS AKUN
+    ===================================== */
+
+    const statusUser = String(
+      profile.status || ""
+    ).trim().toLowerCase();
+
+    if (statusUser !== "aktif") {
+
+      await signOut(auth);
+
+      if (statusUser === "menunggu_verifikasi" ||
+          statusUser === "pending") {
+
+        showMessage(
+          "Akun Anda masih menunggu verifikasi administrator."
+        );
+
+      } else if (statusUser === "ditolak") {
+
+        showMessage(
+          "Pendaftaran akun Anda ditolak. Hubungi administrator."
+        );
+
+      } else {
+
+        showMessage(
+          "Akun Anda belum aktif. Hubungi administrator."
+        );
+
+      }
+
+      return;
+
+    }
+
+
+    /* =====================================
+       5. VALIDASI DATA INDUK KARYAWAN
+    ===================================== */
+
+    const employeeRef = doc(db, "karyawan", nik);
+
+    const employeeSnapshot = await getDoc(employeeRef);
+
+    if (!employeeSnapshot.exists()) {
+
+      await signOut(auth);
+
+      showMessage(
+        "Data karyawan tidak ditemukan. Pastikan dokumen karyawan menggunakan NIK yang sama."
+      );
+
+      return;
+
+    }
+
+    const employee = employeeSnapshot.data();
+
+
+    /* =====================================
+       6. VALIDASI STATUS KARYAWAN
+    ===================================== */
+
+    if (
+      employee.status !== undefined &&
+      String(employee.status).trim().toLowerCase() !== "aktif"
+    ) {
+
+      await signOut(auth);
+
+      showMessage("Status karyawan tidak aktif.");
+
+      return;
+
+    }
+
+
+    /* =====================================
+       7. VALIDASI ROLE
+    ===================================== */
+
+    const role = String(
+      profile.role || ""
+    ).trim().toLowerCase();
+
+    const roleDiizinkan = [
+      "super_admin",
+      "admin_administrasi",
+      "admin_departemen",
+      "karyawan"
+    ];
+
+    if (!roleDiizinkan.includes(role)) {
+
+      await signOut(auth);
+
+      showMessage(
+        "Role akun tidak dikenali atau tidak memiliki akses."
+      );
+
+      return;
+
+    }
+
+
+    /* =====================================
+       8. CATAT HISTORY LOGIN
+    ===================================== */
+
+    try {
+
+      await catatHistory({
+
+        jenis: "LOGIN",
+
+        nik: nik,
+
+        nama: employee.nama || profile.nama || "Pengguna",
+
+        keterangan: "Berhasil login ke sistem SITER",
+
+        halaman: "index.html",
+
+        detail: {
+
+          role: role,
+
+          metode: "NIK dan Password Firebase Authentication"
+
+        }
+
+      });
+
+    } catch (historyError) {
+
+      console.error(
+        "History login gagal dicatat:",
+        historyError
+      );
+
+    }
+
+
+    /* =====================================
+       9. LOGIN BERHASIL
+    ===================================== */
+
+    showMessage(
+      "Login berhasil. Selamat datang, " +
+      (employee.nama || profile.nama || "Pengguna") +
+      "!",
+      "success"
+    );
+
+    loginButton.textContent = "BERHASIL";
+
+    berhasil = true;
+
+
+    /* =====================================
+       10. PINDAH KE DASHBOARD
+    ===================================== */
+
+    setTimeout(function() {
+
+      window.location.href = "dashboard.html";
+
+    }, 700);
+
+
+  } catch (error) {
+
+    showMessage(getErrorMessage(error));
+
+  } finally {
+
+    if (!berhasil) {
+
+      loginButton.disabled = false;
+
+      loginButton.textContent = "MASUK";
+
+    }
+
+  }
+
+});
+
+
+/* =========================================
+   STATUS INTERNET
+========================================= */
+
+function updateConnection() {
+
+  const box = document.getElementById("connection");
+
+  const text = document.getElementById("connectionText");
+
+  const online = navigator.onLine;
+
+  text.textContent = online
+    ? "Perangkat terhubung ke internet"
+    : "Perangkat tidak terhubung ke internet";
+
+  box.classList.toggle("offline", !online);
+
+}
+
+window.addEventListener("online", updateConnection);
+
+window.addEventListener("offline", updateConnection);
+
+updateConnection();
+
+</script>
+
+</body>
+</html>
