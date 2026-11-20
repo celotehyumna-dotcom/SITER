@@ -595,52 +595,16 @@ tbody tr:hover {
 
 <script type="module">
 
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { db, auth } from "./firebase-config.js";
 
 import {
-    getAuth,
     onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 
 import {
-    getFirestore,
     collection,
     getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-// ========================================
-// KONFIGURASI FIREBASE
-// ========================================
-
-const firebaseConfig = {
-
-    apiKey: "AIzaSyATkV03GiAyCZoGWrgmoUx1t4vo-WwmWKk",
-
-    authDomain: "siter-khusus.firebaseapp.com",
-
-    projectId: "siter-khusus",
-
-    storageBucket: "siter-khusus.firebasestorage.app",
-
-    messagingSenderId: "129237115311",
-
-    appId: "1:129237115311:web:a99b886287cfd8a6534f5a"
-
-};
-
-
-// ========================================
-// FIREBASE
-// ========================================
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
 
 // ========================================
